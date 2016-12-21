@@ -15,7 +15,7 @@ public class CustomObject extends ARObject {
     private String objectDefinition = null;
 
     public CustomObject(String name, String patternName, double markerWidth, double[] markerCenter) {
-        super(name, patternName, markerWidth, markerCenter);
+        super(name, patternName, markerWidth, markerCenter );
         float   mat_ambientf[]     = {0f, 1.0f, 0f, 1.0f};
         float   mat_flashf[]       = {0f, 1.0f, 0f, 1.0f};
         float   mat_diffusef[]       = {0f, 1.0f, 0f, 1.0f};
@@ -46,6 +46,7 @@ public class CustomObject extends ARObject {
         this.objectDefinition = structure.definition;
         ObjFormatReader formatReader = new ObjFormatReader(this.objectDefinition);
         this.box = new GenericObject(this.objectDefinition);
+       // this.box = new GenericObject();
 
         mat_ambient = GraphicsUtil.makeFloatBuffer(structure.color);
         mat_flash = GraphicsUtil.makeFloatBuffer(structure.color);
@@ -54,6 +55,7 @@ public class CustomObject extends ARObject {
     }
 
     private GenericObject box = new GenericObject();
+//    private SimpleBox box = new SimpleBox();
     private FloatBuffer mat_flash;
     private FloatBuffer mat_ambient;
     private FloatBuffer mat_flash_shiny;
@@ -77,7 +79,7 @@ public class CustomObject extends ARObject {
         gl.glTranslatef( 0.0f, 0.0f, 12.5f );
 
         //draw the box
-//        box.draw(gl);
+        box.draw(gl);
     }
     @Override
     public void init(GL10 gl) {

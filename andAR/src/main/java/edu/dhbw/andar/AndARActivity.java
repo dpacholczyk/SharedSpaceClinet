@@ -197,7 +197,9 @@ public abstract class AndARActivity extends Activity implements Callback, Uncaug
     	if (camera == null) {
 	    	//camera = Camera.open();
     		camera = CameraHolder.instance().open();
-    		   		    		
+			if(camera == null) {
+				camera = Camera.open();
+			}
     		
     		
     		try {
@@ -206,9 +208,9 @@ public abstract class AndARActivity extends Activity implements Callback, Uncaug
 				e1.printStackTrace();
 			}
 			
-			CameraParameters.setCameraParameters(camera, 
+			CameraParameters.setCameraParameters(camera,
 					previewSurface.getWidth(), previewSurface.getHeight());
-	        
+
 	        if(!Config.USE_ONE_SHOT_PREVIEW) {
 	        	camera.setPreviewCallback(cameraHandler);	 
 	        } 

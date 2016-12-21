@@ -1,7 +1,5 @@
 package threewe.arinterface.sharedspaceclient.objects;
 
-import android.util.Log;
-
 import java.nio.FloatBuffer;
 import java.util.List;
 
@@ -85,22 +83,36 @@ public class GenericObject {
     }
 
     public GenericObject(String data) {
-        Log.d("STRUCTURE", data);
+
         ObjFormatReader reader = new ObjFormatReader(data);
-        float[] vectors = new float[reader.getVectors().size()];
-        float[] normals = new float[reader.getNormals().size()];
+        float[] vectors = new float[reader.getVectors().size() * 3];
+        float[] normalsInfo = new float[reader.getVectors().size() * 3];
 
-        int i = 0;
-        for(Float vector : reader.getVectors()) {
-            vectors[i] = (float)vector;
-            i++;
+        int v = 0;
+        int n = 0;
+        List<Float[]> points = reader.getPointsScheme();
+        for(Float[] set : points) {
+            for(int i = 0; i < set.length; i++) {
+                if(set[i] != null) {
+                    vectors[v] = set[i];
+                    v++;
+                }
+            }
         }
 
-        i = 0;
-        for(Float normal : reader.getNormals()) {
-            normals[i] = normal.floatValue();
-            i++;
+        List<Float[]> nPoints = reader.getNormalsScheme();
+        for(Float[] normalsSet : nPoints) {
+            for(int i = 0; i < normalsSet.length; i++) {
+                if(normalsSet[i] != null) {
+                    normalsInfo[n] = normalsSet[i];
+                    n++;
+                }
+            }
         }
+
+        box = GraphicsUtil.makeFloatBuffer(vectors);
+        normals = GraphicsUtil.makeFloatBuffer(normalsInfo);
+        int t = 1;
     }
 
 
