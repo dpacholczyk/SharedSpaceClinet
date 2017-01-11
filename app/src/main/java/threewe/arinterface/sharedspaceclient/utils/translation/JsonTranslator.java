@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import threewe.arinterface.sharedspaceclient.models.Marker;
+import threewe.arinterface.sharedspaceclient.models.Session;
 import threewe.arinterface.sharedspaceclient.models.Structure;
 import threewe.arinterface.sharedspaceclient.utils.State;
 
@@ -38,6 +39,19 @@ public class JsonTranslator {
                         jObject.getDouble("positionX"), jObject.getDouble("positionY"), jObject.getString("definition"));
 //            }
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return s;
+    }
+
+    public static Session getSessionFromJson(String json) {
+        Session s = null;
+        try {
+            JSONObject jObject = new JSONObject(json);
+            s = new Session();
+
+        } catch(JSONException e) {
             e.printStackTrace();
         }
 

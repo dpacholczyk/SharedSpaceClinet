@@ -128,6 +128,7 @@ public class GenericObject {
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 12, 4);
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 16, 4);
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 20, 4);
+//        gl.glDrawElements(GL10.GL_TRIANGLE_FAN, 16, GL10.GL_UNSIGNED_BYTE, box);
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
         gl.glDisableClientState(GL10.GL_NORMAL_ARRAY);
     }

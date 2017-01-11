@@ -24,6 +24,7 @@ import edu.dhbw.andar.ARToolkit;
 import edu.dhbw.andar.AndARActivity;
 import edu.dhbw.andar.exceptions.AndARException;
 import threewe.arinterface.sharedspaceclient.activities.SharedSpaceActivity;
+import threewe.arinterface.sharedspaceclient.config.URLs;
 import threewe.arinterface.sharedspaceclient.models.Marker;
 import threewe.arinterface.sharedspaceclient.models.Structure;
 import threewe.arinterface.sharedspaceclient.objects.CustomObject;
@@ -35,9 +36,6 @@ import threewe.arinterface.sharedspaceclient.utils.translation.JsonTranslator;
 import threewe.arinterface.sharedspaceclient.views.MyView;
 
 public class MainActivity extends AndARActivity {
-
-    public final static String MARKERS_URL = "http://192.168.1.224:9000/markers";
-    public final static String STRUCTURE_URL = "http://192.168.1.224:9000/structures/marker/";
 
     private CustomObject someObject;
 //    private SharedSpaceToolkit artoolkit;
@@ -58,7 +56,7 @@ public class MainActivity extends AndARActivity {
 
 
         try {
-            new MarkersInfoTask().execute(MARKERS_URL);
+            new MarkersInfoTask().execute(URLs.MARKERS_URL);
 
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -111,7 +109,7 @@ public class MainActivity extends AndARActivity {
                             for(Marker marker : State.availableMarkers) {
                                 this.saveToFile(marker.getLocalFileName(), marker.pattern);
 
-                                URL sObj = new URL(STRUCTURE_URL + marker.id);
+                                URL sObj = new URL(URLs.STRUCTURE_URL + marker.id);
                                 HttpURLConnection sCon = (HttpURLConnection) sObj.openConnection();
                                 String sjson = "";
                                 try (BufferedReader sReader = new BufferedReader(new InputStreamReader(sObj.openStream(), "UTF-8"))) {
