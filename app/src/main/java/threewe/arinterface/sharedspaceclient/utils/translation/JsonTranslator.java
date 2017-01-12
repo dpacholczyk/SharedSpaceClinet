@@ -4,9 +4,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import threewe.arinterface.sharedspaceclient.models.Marker;
 import threewe.arinterface.sharedspaceclient.models.Session;
+import threewe.arinterface.sharedspaceclient.models.SessionUser;
 import threewe.arinterface.sharedspaceclient.models.Structure;
+import threewe.arinterface.sharedspaceclient.models.User;
 import threewe.arinterface.sharedspaceclient.utils.State;
 
 /**
@@ -49,7 +54,29 @@ public class JsonTranslator {
         Session s = null;
         try {
             JSONObject jObject = new JSONObject(json);
+            Long sessionId = jObject.getLong("id");
+            JSONArray jUsers = jObject.getJSONArray("users");
+            List<SessionUser> users = new ArrayList<>();
             s = new Session();
+            for(int i = 0; i < jUsers.length(); i++) {
+                JSONObject jSessionUser = jUsers.getJSONObject(i);
+                JSONObject jUser = jSessionUser.getJSONObject("user");
+
+                SessionUser su = new SessionUser();
+                User u = new User();
+
+                u.id = jUser.getLong("id");
+                u.name = jUser.getString("name");
+
+                su.id = jSessionUser.getLong("id");
+                su.user = u;
+                su.isHost = jSessionUser.getBoolean("isHost");
+
+                users.add(su);
+            }
+
+            s.id = sessionId;
+            s.users = users;
 
         } catch(JSONException e) {
             e.printStackTrace();

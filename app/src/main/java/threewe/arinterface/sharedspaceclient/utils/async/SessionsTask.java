@@ -19,8 +19,10 @@ import java.util.List;
 
 import threewe.arinterface.sharedspaceclient.config.URLs;
 import threewe.arinterface.sharedspaceclient.models.Session;
+import threewe.arinterface.sharedspaceclient.models.User;
 import threewe.arinterface.sharedspaceclient.utils.State;
 import threewe.arinterface.sharedspaceclient.utils.URLUtils;
+import threewe.arinterface.sharedspaceclient.utils.translation.JsonTranslator;
 
 /**
  * Created by dpach on 01.01.2017.
@@ -63,10 +65,7 @@ public class SessionsTask extends AsyncTask<String, Void, String> {
             sessionParams.add(response.toString());
             String getResponse = URLUtils.getRequest(URLs.GET_SESSION_URL, sessionParams);
 
-            JSONObject jObject = new JSONObject(getResponse);
-            Long sessionId = jObject.getLong("id");
-            Session session = new Session();
-            session.id = sessionId;
+            Session session = JsonTranslator.getSessionFromJson(getResponse);
 
             Log.d("POLACZENIE", getResponse);
 
