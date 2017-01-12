@@ -27,5 +27,6 @@ public class URLs {
     public final static String CREATE_SESSION_URL = "http://192.168.1.224:9000/sessions/create";
     public final static String JOIN_SESSION_URL = "http://192.168.1.224:9000/sessions/join";
     public final static String GET_SESSION_URL = "http://192.168.1.224:9000/sessions/get";
+    public final static String GET_SESSION_USERS_URL = "http://192.168.1.224:9000/sessions/users";
     // sessions end
 }

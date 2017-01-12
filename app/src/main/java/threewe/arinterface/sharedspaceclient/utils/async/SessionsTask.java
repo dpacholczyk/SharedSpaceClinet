@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import threewe.arinterface.sharedspaceclient.config.URLs;
+import threewe.arinterface.sharedspaceclient.models.Session;
 import threewe.arinterface.sharedspaceclient.utils.State;
 import threewe.arinterface.sharedspaceclient.utils.URLUtils;
 
@@ -59,10 +62,13 @@ public class SessionsTask extends AsyncTask<String, Void, String> {
             List<String> sessionParams = new ArrayList<String>();
             sessionParams.add(response.toString());
             String getResponse = URLUtils.getRequest(URLs.GET_SESSION_URL, sessionParams);
+
+            JSONObject jObject = new JSONObject(getResponse);
+            Long sessionId = jObject.getLong("id");
+            Session session = new Session();
+            session.id = sessionId;
+
             Log.d("POLACZENIE", getResponse);
-            int t = 1;
-
-
 
 
         } catch(Exception ex) {
