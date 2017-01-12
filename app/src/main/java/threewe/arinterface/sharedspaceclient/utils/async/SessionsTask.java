@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import threewe.arinterface.sharedspaceclient.config.URLs;
 import threewe.arinterface.sharedspaceclient.utils.State;
@@ -54,16 +56,9 @@ public class SessionsTask extends AsyncTask<String, Void, String> {
 
             Log.d("POLACZENIE", response.toString());
 
-            String GET_URL = URLs.GET_SESSION_URL;
-            GET_URL = URLUtils.addParameter(GET_URL, response.toString());
-            URL getUrl = new URL(GET_URL);
-            String getResponse = "";
-//            getUrl.openStream();
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(getUrl.openStream(), "UTF-8"))) {
-                for (String line; (line = reader.readLine()) != null;) {
-                    getResponse += line;
-                }
-            }
+            List<String> sessionParams = new ArrayList<String>();
+            sessionParams.add(response.toString());
+            String getResponse = URLUtils.getRequest(URLs.GET_SESSION_URL, sessionParams);
             Log.d("POLACZENIE", getResponse);
             int t = 1;
 
