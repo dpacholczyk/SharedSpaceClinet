@@ -9,7 +9,7 @@ import threewe.arinterface.sharedspaceclient.models.Marker;
 import threewe.arinterface.sharedspaceclient.models.Session;
 
 /**
- * Created by dpach on 05.11.2016.
+ * Created by Dawid Pacholczyk <dpacholczyk@outlook.com> on 05.11.2016.
  */
 
 public class State {

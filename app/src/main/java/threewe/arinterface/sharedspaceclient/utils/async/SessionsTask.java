@@ -1,16 +1,10 @@
 package threewe.arinterface.sharedspaceclient.utils.async;
 
 import android.os.AsyncTask;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -25,7 +19,7 @@ import threewe.arinterface.sharedspaceclient.utils.URLUtils;
 import threewe.arinterface.sharedspaceclient.utils.translation.JsonTranslator;
 
 /**
- * Created by dpach on 01.01.2017.
+ * Created by Dawid Pacholczyk <dpacholczyk@outlook.com> on 01.01.2017.
  */
 
 public class SessionsTask extends AsyncTask<String, Void, String> {
@@ -39,7 +33,7 @@ public class SessionsTask extends AsyncTask<String, Void, String> {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
 
-            String urlParameters = "DeviceId=" + State.getCurrentId();
+            String urlParameters = "SessionName=test&DeviceId=" + State.getCurrentId();
             con.setDoOutput(true);
             DataOutputStream wr = new DataOutputStream(con.getOutputStream());
             wr.writeBytes(urlParameters);
@@ -59,17 +53,11 @@ public class SessionsTask extends AsyncTask<String, Void, String> {
             }
             in.close();
 
-            Log.d("POLACZENIE", response.toString());
-
             List<String> sessionParams = new ArrayList<String>();
             sessionParams.add(response.toString());
             String getResponse = URLUtils.getRequest(URLs.GET_SESSION_URL, sessionParams);
 
             Session session = JsonTranslator.getSessionFromJson(getResponse);
-
-            Log.d("POLACZENIE", getResponse);
-
-
         } catch(Exception ex) {
             Log.d("POLACZENIE", ex.getMessage() + "");
         }

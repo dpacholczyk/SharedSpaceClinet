@@ -35,6 +35,10 @@ import threewe.arinterface.sharedspaceclient.utils.toolkit.SharedSpaceToolkit;
 import threewe.arinterface.sharedspaceclient.utils.translation.JsonTranslator;
 import threewe.arinterface.sharedspaceclient.views.MyView;
 
+/**
+ * Created by Dawid Pacholczyk <dpacholczyk@outlook.com>
+ */
+
 public class MainActivity extends AndARActivity {
 
     private CustomObject someObject;

@@ -2,4 +2,6 @@
     <string name="app_name">SharedSpace</string>
     <string name="create_session">Create</string>
     <string name="join_session">Join</string>
+    <string name="join_session_title">Enter session ID</string>
+    <string name="cancel">Cancel</string>
 </resources>
