@@ -54,8 +54,11 @@ public class JsonTranslator {
         Session s = null;
         try {
             JSONObject jObject = new JSONObject(json);
+
             Long sessionId = jObject.getLong("id");
             JSONArray jUsers = jObject.getJSONArray("users");
+            JSONArray jMarkers = jObject.getJSONArray("markers");
+
             List<SessionUser> users = new ArrayList<>();
             s = new Session();
             for(int i = 0; i < jUsers.length(); i++) {
@@ -73,6 +76,38 @@ public class JsonTranslator {
                 su.isHost = jSessionUser.getBoolean("isHost");
 
                 users.add(su);
+            }
+
+            for(int i = 0; i < jMarkers.length(); i++) {
+                JSONObject jMarker = jMarkers.getJSONObject(i);
+
+                Marker marker = new Marker();
+                marker.id = jMarker.getLong("id");
+                marker.name = jMarker.getString("name");
+                marker.fileName = jMarker.getString("fileName");
+                marker.pattern = jMarker.getString("pattern");
+
+                JSONObject jStructure = jMarker.getJSONObject("structure");
+
+                Structure structure = new Structure();
+                structure.id = jStructure.getLong("id");
+                structure.name = jStructure.getString("name");
+                structure.definition = jStructure.getString("definition");
+
+                double[] position = new double[2];
+                position[0] = jStructure.getDouble("positionX");
+                position[1] = jStructure.getDouble("positionY");
+                structure.position = position;
+
+                float[] color = new float[3];
+                color[0] = (float)jStructure.getDouble("colorR");
+                color[1] = (float)jStructure.getDouble("colorG");
+                color[2] = (float)jStructure.getDouble("colorB");
+                structure.color = color;
+
+                marker.setStucture(structure);
+
+                s.markers.add(marker);
             }
 
             s.id = sessionId;

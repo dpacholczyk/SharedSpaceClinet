@@ -1,0 +1,46 @@
+try {
+                    String result = "";
+                    URL obj = new URL(urls[0]);
+                    HttpURLConnection con = (HttpURLConnection)obj.openConnection();
+                    String json = "";
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(obj.openStream(), "UTF-8"))) {
+                        for (String line; (line = reader.readLine()) != null;) {
+                            json += line;
+                        }
+                        JsonTranslator.setMarkersFromJson(json);
+                        try {
+                            for(Marker marker : State.availableMarkers) {
+                                this.saveToFile(marker.getLocalFileName(), marker.pattern);
+
+                                URL sObj = new URL(URLs.STRUCTURE_URL + marker.id);
+                                HttpURLConnection sCon = (HttpURLConnection) sObj.openConnection();
+                                String sjson = "";
+                                try (BufferedReader sReader = new BufferedReader(new InputStreamReader(sObj.openStream(), "UTF-8"))) {
+                                    for (String line; (line = sReader.readLine()) != null; ) {
+                                        sjson += line;
+                                    }
+                                    Structure s = JsonTranslator.getStructureFromJson(sjson);
+                                    marker.setStucture(s);
+                                } catch(Exception ex) {
+                                    Log.d("JSON", "structure exception: " + ex.getMessage());
+                                }
+
+                                artoolkit = MainActivity.super.getArtoolkit();
+                                someObject = new CustomObject(marker.name, marker.getLocalFileName(), 80.0, marker.getStructure());
+                                artoolkit.registerARObject(someObject);
+                            }
+                        } catch (AndARException ex){
+                            System.out.println(ex.getMessage());
+                            Log.d("JSON", ex.getMessage());
+                        }
+                        startPreview();
+                    } catch(Exception ex) {
+                        Log.d("JSON", ex.getMessage());
+                    }
+
+                    return result;
+                } catch (Exception e) {
+                    this.exception = e;
+
+                    return null;
+                }

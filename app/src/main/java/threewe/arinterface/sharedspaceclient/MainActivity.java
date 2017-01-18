@@ -26,6 +26,7 @@ import edu.dhbw.andar.exceptions.AndARException;
 import threewe.arinterface.sharedspaceclient.activities.SharedSpaceActivity;
 import threewe.arinterface.sharedspaceclient.config.URLs;
 import threewe.arinterface.sharedspaceclient.models.Marker;
+import threewe.arinterface.sharedspaceclient.models.Session;
 import threewe.arinterface.sharedspaceclient.models.Structure;
 import threewe.arinterface.sharedspaceclient.objects.CustomObject;
 import threewe.arinterface.sharedspaceclient.renderer.CustomRenderer;
@@ -58,13 +59,23 @@ public class MainActivity extends AndARActivity {
         CustomRenderer renderer = new CustomRenderer();
         super.setNonARRenderer(renderer);
 
-
-        try {
-            new MarkersInfoTask().execute(URLs.MARKERS_URL);
-
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+        for(Marker marker : State.currentSession.markers) {
+            artoolkit = MainActivity.super.getArtoolkit();
+            someObject = new CustomObject(marker.name, marker.getLocalFileName(), 80.0, marker.getStructure());
+            try {
+                artoolkit.registerARObject(someObject);
+            } catch (AndARException e) {
+                e.printStackTrace();
+            }
         }
+
+
+//        try {
+//            new MarkersInfoTask().execute(URLs.MARKERS_URL);
+//
+//        } catch (Exception ex) {
+//            System.out.println(ex.getMessage());
+//        }
     }
 
 
@@ -100,6 +111,7 @@ public class MainActivity extends AndARActivity {
         protected String doInBackground(String... urls) {
             if(!OFFLINE) {
                 try {
+
                     String result = "";
                     URL obj = new URL(urls[0]);
                     HttpURLConnection con = (HttpURLConnection)obj.openConnection();

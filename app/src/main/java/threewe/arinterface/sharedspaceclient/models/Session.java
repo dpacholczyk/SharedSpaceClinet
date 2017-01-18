@@ -11,4 +11,6 @@ public class Session {
     public Long id;
 
     public List<SessionUser> users = new ArrayList<SessionUser>();
+
+    public List<Marker> markers = new ArrayList<Marker>();
 }
