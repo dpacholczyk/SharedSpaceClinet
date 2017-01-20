@@ -81,11 +81,11 @@ public class JsonTranslator {
             for(int i = 0; i < jMarkers.length(); i++) {
                 JSONObject jMarker = jMarkers.getJSONObject(i);
 
-                Marker marker = new Marker();
-                marker.id = jMarker.getLong("id");
-                marker.name = jMarker.getString("name");
-                marker.fileName = jMarker.getString("fileName");
-                marker.pattern = jMarker.getString("pattern");
+                Long id = jMarker.getLong("id");
+                String name = jMarker.getString("name");
+                String fileName = jMarker.getString("fileName");
+                String pattern = jMarker.getString("pattern").replace("\r", "");
+                Marker marker = new Marker(id, name, fileName, pattern);
 
                 JSONObject jStructure = jMarker.getJSONObject("structure");
 

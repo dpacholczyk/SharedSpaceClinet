@@ -30,6 +30,10 @@ public class Marker {
         this.localFileName = "pattern_" + this.fileName + "_" + this.id + ".patt";
     }
 
+    public void setLocalFileName() {
+        this.localFileName = "pattern_" + this.fileName + "_" + this.id + ".patt";
+    }
+
     public String getLocalFileName() {
         return this.localFileName;
     }

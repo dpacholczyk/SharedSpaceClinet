@@ -49,8 +49,8 @@ public class ObjFormatReader {
                 for(int i = 1; i < elements.length; i++) {
                     String[] info = elements[i].split("//");
 //                    points[i-1] = Float.parseFloat(info[0]);
-                    Integer point = Integer.parseInt(info[0]);
-                    Integer nPoint = Integer.parseInt(info[1]);
+                    Integer point = Integer.parseInt(info[0].replace("\r", ""));
+                    Integer nPoint = Integer.parseInt(info[1].replace("\r", ""));
 
                     Float x, nx = null;
                     Float y, ny = null;
@@ -96,7 +96,6 @@ public class ObjFormatReader {
                 }
             }
         }
-        int test = 1;
     }
 
     public List<Float> getVectors() {
