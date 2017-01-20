@@ -1,5 +1,7 @@
 package threewe.arinterface.sharedspaceclient.objects;
 
+import android.content.Context;
+
 import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -8,11 +10,15 @@ import edu.dhbw.andar.ARObject;
 import edu.dhbw.andar.pub.SimpleBox;
 import edu.dhbw.andar.util.GraphicsUtil;
 import threewe.arinterface.sharedspaceclient.models.Structure;
+import threewe.arinterface.sharedspaceclient.reader.OBJParser;
+import threewe.arinterface.sharedspaceclient.reader.TDModel;
 import threewe.arinterface.sharedspaceclient.utils.translation.ObjFormatReader;
 
 public class CustomObject extends ARObject {
 
     private String objectDefinition = null;
+    private OBJParser parser;
+    private TDModel model;
 
     public CustomObject(String name, String patternName, double markerWidth, double[] markerCenter) {
         super(name, patternName, markerWidth, markerCenter );
@@ -39,12 +45,17 @@ public class CustomObject extends ARObject {
 
     }
 
-    public CustomObject(String name, String patternName, double markerWidth, Structure structure) {
+    public CustomObject(String name, String patternName, double markerWidth, Structure structure, Context ctx) {
         super(name, patternName, markerWidth, structure.position);
         float   mat_flash_shinyf[] = {50.0f};
 
         this.objectDefinition = structure.definition;
-        ObjFormatReader formatReader = new ObjFormatReader(this.objectDefinition);
+
+//        ObjFormatReader formatReader = new ObjFormatReader(this.objectDefinition);
+        parser=new OBJParser(ctx);
+        model=parser.parseOBJ(this.objectDefinition);
+
+
         this.box = new GenericObject(this.objectDefinition);
        // this.box = new GenericObject();
 
@@ -79,7 +90,8 @@ public class CustomObject extends ARObject {
         gl.glTranslatef( 0.0f, 0.0f, 12.5f );
 
         //draw the box
-        box.draw(gl);
+//        box.draw(gl);
+        model.draw(gl);
     }
     @Override
     public void init(GL10 gl) {

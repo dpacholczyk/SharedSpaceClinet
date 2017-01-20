@@ -92,7 +92,7 @@ public class JsonTranslator {
                 Structure structure = new Structure();
                 structure.id = jStructure.getLong("id");
                 structure.name = jStructure.getString("name");
-                structure.definition = jStructure.getString("definition");
+                structure.definition = jStructure.getString("definition").replace("\r", "");
 
                 double[] position = new double[2];
                 position[0] = jStructure.getDouble("positionX");
