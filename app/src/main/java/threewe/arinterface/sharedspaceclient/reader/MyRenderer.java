@@ -45,7 +45,7 @@ public class MyRenderer extends GLSurfaceView implements Renderer {
 
 	public MyRenderer(Context ctx) {
 		super(ctx);
-		
+
 		parser=new OBJParser(ctx);
 		model=parser.parseOBJ("/sdcard/windmill.obj");
 		Debug.stopMethodTracing();

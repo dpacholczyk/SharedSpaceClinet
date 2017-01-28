@@ -42,7 +42,7 @@ public class JoinSessionsTask extends AsyncTask<String, Void, String> {
 
             State.currentSession = JsonTranslator.getSessionFromJson(getResponse);
         } catch(Exception ex) {
-
+            int test = 1;
         }
 
         return "";

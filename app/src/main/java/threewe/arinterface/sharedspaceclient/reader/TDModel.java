@@ -11,8 +11,10 @@ public class TDModel {
 	Vector<Float> v;
 	Vector<Float> vn;
 	Vector<Float> vt;
+	float[] c = new float[] { 1.0f, 0.0f, 0.0f, 1.0f };
 	Vector<TDModelPart> parts;
 	FloatBuffer vertexBuffer;
+	FloatBuffer colorBuffer;
 
 	public TDModel(Vector<Float> v, Vector<Float> vn, Vector<Float> vt,
 			Vector<TDModelPart> parts) {
@@ -38,7 +40,9 @@ public class TDModel {
 	}
 	public void draw(GL10 gl) {
 		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
+//		gl.glColorPointer(4, GL10.GL_FLOAT, 0, colorBuffer);
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+//		gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
 		
 		for(int i=0; i<parts.size(); i++){
 			TDModelPart t=parts.get(i);
@@ -51,9 +55,12 @@ public class TDModel {
 				gl.glMaterialfv(GL10.GL_FRONT_AND_BACK,GL10.GL_SPECULAR,s);
 				gl.glMaterialfv(GL10.GL_FRONT_AND_BACK,GL10.GL_DIFFUSE,d);
 			}
+			gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_AMBIENT, colorBuffer);
 			gl.glEnableClientState(GL10.GL_NORMAL_ARRAY);
 			gl.glNormalPointer(GL10.GL_FLOAT, 0, t.getNormalBuffer());
+
 			gl.glDrawElements(GL10.GL_TRIANGLES,t.getFacesCount(),GL10.GL_UNSIGNED_SHORT,t.getFaceBuffer());
+
 			//gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 			//gl.glDisableClientState(GL10.GL_COLOR_ARRAY);
 			gl.glDisableClientState(GL10.GL_NORMAL_ARRAY);
@@ -65,6 +72,13 @@ public class TDModel {
 		vertexBuffer = vBuf.asFloatBuffer();
 		vertexBuffer.put(toPrimitiveArrayF(v));
 		vertexBuffer.position(0);
+	}
+	public void buildColorBuffer() {
+		ByteBuffer vBuf = ByteBuffer.allocateDirect(v.size() * 4);
+		vBuf.order(ByteOrder.nativeOrder());
+		colorBuffer = vBuf.asFloatBuffer();
+		colorBuffer.put(c);
+		colorBuffer.position(0);
 	}
 	private static float[] toPrimitiveArrayF(Vector<Float> vector){
 		float[] f;

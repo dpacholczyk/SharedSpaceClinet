@@ -1,40 +1,23 @@
 package threewe.arinterface.sharedspaceclient;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.opengl.GLSurfaceView;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import javax.microedition.khronos.opengles.GL;
 
 import edu.dhbw.andar.ARToolkit;
 import edu.dhbw.andar.AndARActivity;
 import edu.dhbw.andar.exceptions.AndARException;
-import threewe.arinterface.sharedspaceclient.activities.SharedSpaceActivity;
-import threewe.arinterface.sharedspaceclient.config.URLs;
 import threewe.arinterface.sharedspaceclient.models.Marker;
 import threewe.arinterface.sharedspaceclient.models.Session;
-import threewe.arinterface.sharedspaceclient.models.Structure;
 import threewe.arinterface.sharedspaceclient.objects.CustomObject;
 import threewe.arinterface.sharedspaceclient.renderer.CustomRenderer;
-import threewe.arinterface.sharedspaceclient.utils.MatrixTrackingGL;
 import threewe.arinterface.sharedspaceclient.utils.State;
-import threewe.arinterface.sharedspaceclient.utils.toolkit.SharedSpaceToolkit;
-import threewe.arinterface.sharedspaceclient.utils.translation.JsonTranslator;
-import threewe.arinterface.sharedspaceclient.views.MyView;
 
 /**
  * Created by Dawid Pacholczyk <dpacholczyk@outlook.com>
@@ -78,9 +61,9 @@ public class MainActivity extends AndARActivity {
             fos.write(pattern.getBytes());
             fos.close();
 
-            for(int i = 0; i < getFilesDir().listFiles().length; i++) {
-                Log.d("GENIUSZ", getFilesDir().listFiles()[i].toString());
-            }
+//            for(int i = 0; i < getFilesDir().listFiles().length; i++) {
+//                Log.d("GENIUSZ", getFilesDir().listFiles()[i].toString());
+//            }
 
             FileInputStream in = openFileInput(fileName);
             InputStreamReader inputStreamReader = new InputStreamReader(in);
@@ -90,21 +73,18 @@ public class MainActivity extends AndARActivity {
             while ((line = bufferedReader.readLine()) != null) {
                 sb.append(line);
             }
-
-            Log.d("GENIUSZ", sb.toString());
         } catch(Exception ex) {
-            Log.d("SHARED_SPACE", ex.getMessage());
+
         }
     }
 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        boolean chaneStatus = false;
         if(!wentUp) {
             switch(event.getAction()) {
                 case MotionEvent.ACTION_UP:
-                    chaneStatus = true;
+                    this.makeScreenshot((int)event.getX(), (int)event.getY());
                     break;
             }
         }

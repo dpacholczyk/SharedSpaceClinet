@@ -296,7 +296,11 @@ public abstract class AndARActivity extends Activity implements Callback, Uncaug
 	 */
 	public Bitmap takeScreenshot() {
 		return renderer.takeScreenshot();
-	}	
+	}
+
+	public void makeScreenshot(int x, int y) {
+		renderer.makeScreenshot(x, y);
+	}
 	
 	/**
 	 * 

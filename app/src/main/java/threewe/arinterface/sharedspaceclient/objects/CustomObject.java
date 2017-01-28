@@ -19,6 +19,7 @@ public class CustomObject extends ARObject {
     private String objectDefinition = null;
     private OBJParser parser;
     private TDModel model;
+    private Structure structure;
 
     public CustomObject(String name, String patternName, double markerWidth, double[] markerCenter) {
         super(name, patternName, markerWidth, markerCenter );
@@ -48,6 +49,7 @@ public class CustomObject extends ARObject {
     public CustomObject(String name, String patternName, double markerWidth, Structure structure, Context ctx) {
         super(name, patternName, markerWidth, structure.position);
         float   mat_flash_shinyf[] = {50.0f};
+        this.structure = structure;
 
         this.objectDefinition = structure.definition;
 
@@ -56,16 +58,16 @@ public class CustomObject extends ARObject {
         model=parser.parseOBJ(this.objectDefinition);
 
 
-        this.box = new GenericObject(this.objectDefinition);
+//        this.box = new GenericObject(this.objectDefinition);
        // this.box = new GenericObject();
 
-        mat_ambient = GraphicsUtil.makeFloatBuffer(structure.color);
-        mat_flash = GraphicsUtil.makeFloatBuffer(structure.color);
+//        mat_ambient = GraphicsUtil.makeFloatBuffer(structure.color);
+//        mat_flash = GraphicsUtil.makeFloatBuffer(structure.color);
         mat_flash_shiny = GraphicsUtil.makeFloatBuffer(mat_flash_shinyf);
-        mat_diffuse = GraphicsUtil.makeFloatBuffer(structure.color);
+//        mat_diffuse = GraphicsUtil.makeFloatBuffer(structure.color);
     }
 
-    private GenericObject box = new GenericObject();
+//    private GenericObject box = new GenericObject();
 //    private SimpleBox box = new SimpleBox();
     private FloatBuffer mat_flash;
     private FloatBuffer mat_ambient;
@@ -80,14 +82,14 @@ public class CustomObject extends ARObject {
     public final void draw(GL10 gl) {
         super.draw(gl);
 
-        gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR,mat_flash);
-        gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, mat_flash_shiny);
-        gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_DIFFUSE, mat_diffuse);
-        gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_AMBIENT, mat_ambient);
-
-        //draw cube
-        gl.glColor4f(0, 1.0f, 0, 1.0f);
-        gl.glTranslatef( 0.0f, 0.0f, 12.5f );
+//        gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR,mat_flash);
+//        gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, mat_flash_shiny);
+//        gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_DIFFUSE, mat_diffuse);
+//        gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_AMBIENT, mat_ambient);
+//
+//        //draw cube
+//        gl.glColor4f(0, 1.0f, 0, 1.0f);
+//        gl.glTranslatef( 0.0f, 0.0f, 12.5f );
 
         //draw the box
 //        box.draw(gl);

@@ -63,6 +63,7 @@ public class OBJParser {
 		}
 		TDModel t=new TDModel(v,vn,vt,parts);
 		t.buildVertexBuffer();
+		t.buildColorBuffer();
 		Log.v("models",t.toString());
 		return t;
 	}
