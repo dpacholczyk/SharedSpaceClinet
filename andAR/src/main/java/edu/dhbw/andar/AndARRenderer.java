@@ -21,6 +21,7 @@ package edu.dhbw.andar;
 
 
 import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -33,7 +34,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import edu.dhbw.andar.interfaces.OpenGLRenderer;
 import edu.dhbw.andar.interfaces.PreviewFrameSink;
-
+import edu.dhbw.andar.util.ColorTools;
 
 
 import android.content.res.Resources;
@@ -188,7 +189,8 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
 			int[] screenshot = new int[screenHeight*screenWidth];
 			Buffer screenshotBuffer = IntBuffer.wrap(tmp);
 			screenshotBuffer.position(0);
-			gl.glReadPixels(0,0,screenWidth,screenHeight, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, screenshotBuffer); 
+			gl.glReadPixels(0,0,screenWidth,screenHeight, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, screenshotBuffer);
+			int test = 1;
 			for(int i=0; i<screenHeight; i++)
 	         {//remember, that OpenGL bitmap is incompatible with Android bitmap
 	          //and so, some correction need.
@@ -201,17 +203,34 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
 	                   screenshot[(screenHeight-i-1)*screenWidth+j]=pix1;
 	              }
 	         }
+
 			this.screenshot = Bitmap.createBitmap(screenshot, screenWidth, screenHeight, Config.RGB_565);
-
-
-
 
 			int pixel = this.screenshot.getPixel(x,y);
 			int redValue = Color.red(pixel);
 			int blueValue = Color.blue(pixel);
 			int greenValue = Color.green(pixel);
 
-			Log.d("SCREENSHOT", "pixel: " + redValue + " " + blueValue + " " + greenValue);
+			String colorName = "";
+			try {
+				colorName = ColorTools.getColor(redValue, greenValue, blueValue);
+
+				Log.d("SCREENSHOT", "kolor: " + colorName);
+				if(colorName != "none") {
+					Log.d("SCREENSHOT", "nacisnalem obiekt");
+				} else {
+					Log.d("SCREENSHOT", "nacisnalem obiekt");
+				}
+
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
 
 			screenshotTaken = true;
 			takeScreenshot = false;

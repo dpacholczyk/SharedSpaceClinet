@@ -40,7 +40,7 @@ public class JsonTranslator {
 //                JSONObject jObject = jArray.getJSONObject(i);
                 JSONObject jObject = new JSONObject(json);
                 s = new Structure(jObject.getLong("id"), jObject.getString("name"),
-                        (float)jObject.getDouble("colorR"), (float)jObject.getDouble("colorG"), (float)jObject.getDouble("colorB"),
+                        jObject.getInt("colorR"), jObject.getInt("colorG"), jObject.getInt("colorB"),
                         jObject.getDouble("positionX"), jObject.getDouble("positionY"), jObject.getString("definition"));
 //            }
         } catch (JSONException e) {
@@ -99,10 +99,10 @@ public class JsonTranslator {
                 position[1] = jStructure.getDouble("positionY");
                 structure.position = position;
 
-                float[] color = new float[3];
-                color[0] = (float)jStructure.getDouble("colorR");
-                color[1] = (float)jStructure.getDouble("colorG");
-                color[2] = (float)jStructure.getDouble("colorB");
+                int[] color = new int[3];
+                color[0] = jStructure.getInt("colorR");
+                color[1] = jStructure.getInt("colorG");
+                color[2] = jStructure.getInt("colorB");
                 structure.color = color;
 
                 marker.setStucture(structure);

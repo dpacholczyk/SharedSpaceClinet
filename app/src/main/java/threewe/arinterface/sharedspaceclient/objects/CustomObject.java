@@ -54,7 +54,7 @@ public class CustomObject extends ARObject {
         this.objectDefinition = structure.definition;
 
 //        ObjFormatReader formatReader = new ObjFormatReader(this.objectDefinition);
-        parser=new OBJParser(ctx);
+        parser=new OBJParser(ctx, structure);
         model=parser.parseOBJ(this.objectDefinition);
 
 

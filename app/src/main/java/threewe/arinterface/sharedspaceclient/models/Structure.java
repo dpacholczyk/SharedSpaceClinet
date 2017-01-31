@@ -9,7 +9,7 @@ public class Structure {
 
     public String name;
 
-    public float[] color;
+    public int[] color;
 
     public double[] position;
 
@@ -19,7 +19,7 @@ public class Structure {
 
     }
 
-    public Structure(Long id, String name, float[] color, double[] position, String definition) {
+    public Structure(Long id, String name, int[] color, double[] position, String definition) {
         this.id = id;
         this.name = name;
         this.color = color;
@@ -27,10 +27,10 @@ public class Structure {
         this.definition = definition;
     }
 
-    public Structure(Long id, String name, float colorR, float colorG, float colorB, double positionX, double positionY, String def) {
+    public Structure(Long id, String name, int colorR, int colorG, int colorB, double positionX, double positionY, String def) {
         this.id = id;
         this.name = name;
-        this.color = new float[]{colorR, colorG, colorB};
+        this.color = new int[]{colorR, colorG, colorB};
         this.position = new double[]{positionX, positionY};
         this.definition = def;
     }

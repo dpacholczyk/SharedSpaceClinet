@@ -9,12 +9,14 @@ import java.util.Vector;
 import android.content.Context;
 import android.util.Log;
 
+import threewe.arinterface.sharedspaceclient.models.Structure;
 
 
 public class OBJParser {
 	int numVertices=0;
 	int numFaces=0;
 	Context context;
+	Structure structure;
 
 	Vector<Short> faces=new Vector<Short>();
 	Vector<Short> vtPointer=new Vector<Short>();
@@ -27,6 +29,11 @@ public class OBJParser {
 
 	public OBJParser(Context ctx){
 		context=ctx;
+	}
+
+	public OBJParser(Context ctx, Structure structure){
+		context=ctx;
+		this.structure = structure;
 	}
 
 	public TDModel parseOBJ(String data) {
@@ -58,10 +65,10 @@ public class OBJParser {
 			}
 
 		if(faces!= null){//if not this is not the start of the first group
-			TDModelPart model=new TDModelPart(faces, vtPointer, vnPointer, m,vn);
+			TDModelPart model=new TDModelPart(faces, vtPointer, vnPointer, m, vn);
 			parts.add(model);
 		}
-		TDModel t=new TDModel(v,vn,vt,parts);
+		TDModel t=new TDModel(v,vn,vt,parts,structure.color);
 		t.buildVertexBuffer();
 		t.buildColorBuffer();
 		Log.v("models",t.toString());
