@@ -212,24 +212,29 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
 			int greenValue = Color.green(pixel);
 
 			String colorName = "";
+			Log.d("SCREENSHOT", "kolor 1: " + colorName);
 			try {
 				colorName = ColorTools.getColor(redValue, greenValue, blueValue);
 
 				Log.d("SCREENSHOT", "kolor: " + colorName);
-				if(colorName != "none") {
+				if(!colorName.equals("none") && colorName.equals(ColorTools.FOR_ACTIVATION)) {
 					Log.d("SCREENSHOT", "nacisnalem obiekt");
 				} else {
-					Log.d("SCREENSHOT", "nacisnalem obiekt");
+					Log.d("SCREENSHOT", "nie nacisnalem obiekt");
 				}
 
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
+				Log.d("SCREENSHOT", "1: " + e.getMessage());
 			} catch (NoSuchMethodException e) {
 				e.printStackTrace();
+				Log.d("SCREENSHOT", "2: " + e.getMessage());
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
+				Log.d("SCREENSHOT", "3: " + e.getMessage());
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
+				Log.d("SCREENSHOT", "4: " + e.getMessage());
 			}
 
 			screenshotTaken = true;

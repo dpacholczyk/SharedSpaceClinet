@@ -1,5 +1,7 @@
 package edu.dhbw.andar.util;
 
+import android.util.Log;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -13,11 +15,13 @@ import java.util.List;
 public class ColorTools {
     protected static List<String> availableColors;
 
+    public static final String FOR_ACTIVATION = "green";
+
     static {
         availableColors = new ArrayList<>();
         availableColors.add("Green");
         availableColors.add("Blue");
-        availableColors.add("Ted");
+        availableColors.add("Red");
         availableColors.add("Purple");
         availableColors.add("Teal");
         availableColors.add("Yellow");
@@ -29,8 +33,10 @@ public class ColorTools {
         Class cls = Class.forName("edu.dhbw.andar.util.ColorTools");
         for(String color : availableColors) {
             String methodName = "is" + color;
-            method = cls.getDeclaredMethod("methodName", Integer.class);
-            boolean answer = (boolean)method.invoke(obj, red, green, blue);
+            Log.d("SCREENSHOT", "method: " + methodName);
+            method = cls.getDeclaredMethod(methodName, Integer.class, Integer.class, Integer.class);
+            boolean answer = (boolean)method.invoke(obj, new Integer(red), new Integer(green), new Integer(blue));
+            Log.d("SCREENSHOT", "answer: " + answer);
             if(answer) {
                 return color.toLowerCase();
             }
@@ -39,7 +45,7 @@ public class ColorTools {
         return "none";
     }
 
-    public static boolean isGreen(int red, int green, int blue) {
+    public static boolean isGreen(Integer red, Integer green, Integer blue) {
         if(green >= 100 && red < 100 && blue < 100) {
             return true;
         }
@@ -47,7 +53,7 @@ public class ColorTools {
         return false;
     }
 
-    public static boolean isBlue(int red, int green, int blue) {
+    public static boolean isBlue(Integer red, Integer green, Integer blue) {
         if(blue >= 100 && red < 100 && green < 100) {
             return true;
         }
@@ -55,7 +61,7 @@ public class ColorTools {
         return false;
     }
 
-    public static boolean isRed(int red, int green, int blue) {
+    public static boolean isRed(Integer red, Integer green, Integer blue) {
         if(red >= 100 && green < 100 && blue < 100) {
             return true;
         }
@@ -63,7 +69,7 @@ public class ColorTools {
         return false;
     }
 
-    public static boolean isPurple(int red, int green, int blue) {
+    public static boolean isPurple(Integer red, Integer green, Integer blue) {
         if(red >= 100 && blue >= 100 && green < 100) {
             return true;
         }
@@ -71,7 +77,7 @@ public class ColorTools {
         return false;
     }
 
-    public static boolean isTeal(int red, int green, int blue) {
+    public static boolean isTeal(Integer red, Integer green, Integer blue) {
         if(green >= 100 && blue >= 100 && red < 100) {
             return true;
         }
@@ -79,7 +85,7 @@ public class ColorTools {
         return false;
     }
 
-    public static boolean isYellow(int red, int green, int blue) {
+    public static boolean isYellow(Integer red, Integer green, Integer blue) {
         if(red >= 100 && blue >= 100 && green < 100) {
             return true;
         }
