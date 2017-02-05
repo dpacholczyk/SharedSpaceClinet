@@ -190,7 +190,6 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
 			Buffer screenshotBuffer = IntBuffer.wrap(tmp);
 			screenshotBuffer.position(0);
 			gl.glReadPixels(0,0,screenWidth,screenHeight, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, screenshotBuffer);
-			int test = 1;
 			for(int i=0; i<screenHeight; i++)
 	         {//remember, that OpenGL bitmap is incompatible with Android bitmap
 	          //and so, some correction need.

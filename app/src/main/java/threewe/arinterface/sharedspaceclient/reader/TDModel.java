@@ -50,13 +50,14 @@ public class TDModel {
 		return str;
 	}
 	public void draw(GL10 gl) {
-		gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+//		gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
 		gl.glEnableClientState(GL10.GL_NORMAL_ARRAY);
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
 		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
 		gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_AMBIENT, colorBuffer);
 
+		Log.d("OBIEKT_3D", "Parts (size): " + parts.size());
 		for(int i=0; i<parts.size(); i++){
 			TDModelPart t=parts.get(i);
 			Material m=t.getMaterial();
@@ -74,7 +75,9 @@ public class TDModel {
 
 			gl.glDrawElements(GL10.GL_TRIANGLES,t.getFacesCount(),GL10.GL_UNSIGNED_SHORT,t.getFaceBuffer());
 
+			Log.d("OBIEKT_3D", "Faces count: " + t.getFacesCount());
 		}
+
 
 		gl.glDisableClientState(GL10.GL_COLOR_ARRAY);
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
