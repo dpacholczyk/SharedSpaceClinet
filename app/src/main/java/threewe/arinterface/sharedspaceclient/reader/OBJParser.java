@@ -50,18 +50,15 @@ public class OBJParser {
 				if(line.startsWith("f")){//a polygonal face
 					processFLine(line);
 				}
-				else
-					if(line.startsWith("vn")){
+				else {
+					if (line.startsWith("vn")) {
 						processVNLine(line);
+					} else if (line.startsWith("vt")) {
+						processVTLine(line);
+					} else if (line.startsWith("v")) { //line having geometric position of single vertex
+						processVLine(line);
 					}
-					else
-						if(line.startsWith("vt")){
-							processVTLine(line);
-						}
-						else
-							if(line.startsWith("v")){ //line having geometric position of single vertex
-								processVLine(line);
-							}
+				}
 			}
 
 		if(faces!= null){//if not this is not the start of the first group

@@ -29,4 +29,9 @@ public class URLs {
     public final static String GET_SESSION_URL = "http://192.168.1.224:9000/sessions/get";
     public final static String GET_SESSION_USERS_URL = "http://192.168.1.224:9000/sessions/users";
     // sessions end
+
+    // notifications start
+    public final static String SAVE_TOKEN_URL = "http://192.168.1.224:9000/notifications/token/save/";
+    public final static String SEND_NOTIFICACTION_URL = "http://192.168.1.224:9000/notifications/receive";
+    // notifications end
 }

@@ -10,9 +10,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import threewe.arinterface.sharedspaceclient.config.URLs;
 import threewe.arinterface.sharedspaceclient.utils.State;
+import threewe.arinterface.sharedspaceclient.utils.URLUtils;
 import threewe.arinterface.sharedspaceclient.utils.async.JoinSessionsTask;
 import threewe.arinterface.sharedspaceclient.utils.async.SessionsTask;
+import threewe.arinterface.sharedspaceclient.utils.async.TokenTask;
 
 /**
  * Created by Dawid Pacholczyk <dpacholczyk@outlook.com>
@@ -28,6 +37,11 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+//        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+//        Log.d("WIADOMOSCI", "Refreshed tokenn: " + refreshedToken);
+//        new TokenTask(refreshedToken).execute();
+
 
         createButton = (Button) findViewById(R.id.create_session_button);
         joinButton = (Button) findViewById(R.id.join_session_button);
@@ -51,6 +65,7 @@ public class MenuActivity extends AppCompatActivity {
                 builder.setPositiveButton(getResources().getString(R.string.join_session), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        input.setText("1");
                         sessionId = input.getText().toString();
                         new JoinSessionsTask(MenuActivity.this, sessionId).execute();
                     }

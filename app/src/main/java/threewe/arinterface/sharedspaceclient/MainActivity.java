@@ -18,6 +18,7 @@ import threewe.arinterface.sharedspaceclient.models.Session;
 import threewe.arinterface.sharedspaceclient.objects.CustomObject;
 import threewe.arinterface.sharedspaceclient.renderer.CustomRenderer;
 import threewe.arinterface.sharedspaceclient.utils.State;
+import threewe.arinterface.sharedspaceclient.utils.async.SendNotificationTask;
 
 /**
  * Created by Dawid Pacholczyk <dpacholczyk@outlook.com>
@@ -84,6 +85,9 @@ public class MainActivity extends AndARActivity {
         if(!wentUp) {
             switch(event.getAction()) {
                 case MotionEvent.ACTION_UP:
+                    String message = "dasdasdasdas";
+                    Log.d("NOTIFICATIONS", message);
+                    new SendNotificationTask(message).execute();
                     this.makeScreenshot((int)event.getX(), (int)event.getY());
                     break;
             }

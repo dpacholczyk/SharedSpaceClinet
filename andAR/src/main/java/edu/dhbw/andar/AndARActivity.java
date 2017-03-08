@@ -195,7 +195,7 @@ public abstract class AndARActivity extends Activity implements Callback, Uncaug
      */
     private void openCamera()  {
     	if (camera == null) {
-	    	//camera = Camera.open();
+	    	camera = Camera.open();
     		camera = CameraHolder.instance().open();
 			if(camera == null) {
 				camera = Camera.open();
@@ -342,8 +342,9 @@ public abstract class AndARActivity extends Activity implements Callback, Uncaug
 	    	this.w=w;
 	    	this.h=h;
 	    	mSurfaceHolder = holder;
-	    	if(startPreviewRightAway)
-	    		startPreview();
+	    	if(startPreviewRightAway) {
+				startPreview();
+			}
 	    }
 	    
 	    public int getScreenWidth() {

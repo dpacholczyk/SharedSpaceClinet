@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "31826831111",
+    "firebase_url": "https://augmented-space.firebaseio.com",
+    "project_id": "augmented-space",
+    "storage_bucket": "augmented-space.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31826831111:android:5d200f77ebc0df27",
+        "android_client_info": {
+          "package_name": "threewe.arinterface.sharedspaceclient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31826831111-829dl7l24hfkjpe27r0o57tvq9k6595i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "threewe.arinterface.sharedspaceclient",
+            "certificate_hash": "09679ae460c58de33febd238024b4159b8e637a2"
+          }
+        },
+        {
+          "client_id": "31826831111-kvq3t5cmi0mfo2d9rbevmfq01b09emo5.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "31826831111-065k8u8orhh2vtjbqij8in572mn6phjn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmh00JfSrhjB3FvqbDdV_KFWckrlqevQI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
