@@ -23,9 +23,6 @@ public class SendNotificationTask extends AsyncTask<String, Void, String> {
     }
 
     protected String doInBackground(String... params) {
-//        URLUtils.getRequest(URLs.SEND_NOTIFICACTION_URL + this.message);
-//        Log.d("NOTIFICATIONS", URLs.SEND_NOTIFICACTION_URL + this.message);
-
         Map<String, String> urlParams = new HashMap<String, String>();
         urlParams.put("message", this.message);
         URLUtils.postRequest(URLs.SEND_NOTIFICACTION_URL, urlParams);

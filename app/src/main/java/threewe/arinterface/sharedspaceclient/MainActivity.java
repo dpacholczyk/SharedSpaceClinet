@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import edu.dhbw.andar.ARToolkit;
 import edu.dhbw.andar.AndARActivity;
 import edu.dhbw.andar.exceptions.AndARException;
+import threewe.arinterface.sharedspaceclient.config.TmpColorsSolution;
 import threewe.arinterface.sharedspaceclient.models.Marker;
 import threewe.arinterface.sharedspaceclient.models.Session;
 import threewe.arinterface.sharedspaceclient.objects.CustomObject;
@@ -35,14 +36,12 @@ public class MainActivity extends AndARActivity {
     private float touchY = 0;
 
     private boolean wentUp = false;
-    private static final boolean OFFLINE = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CustomRenderer renderer = new CustomRenderer();
         super.setNonARRenderer(renderer);
-        Session test = State.currentSession;
         for(Marker marker : State.currentSession.markers) {
             this.saveToFile(marker.getLocalFileName(), marker.pattern);
 
@@ -61,10 +60,6 @@ public class MainActivity extends AndARActivity {
             FileOutputStream fos = openFileOutput(fileName, Context.MODE_PRIVATE);
             fos.write(pattern.getBytes());
             fos.close();
-
-//            for(int i = 0; i < getFilesDir().listFiles().length; i++) {
-//                Log.d("GENIUSZ", getFilesDir().listFiles()[i].toString());
-//            }
 
             FileInputStream in = openFileInput(fileName);
             InputStreamReader inputStreamReader = new InputStreamReader(in);
@@ -85,10 +80,22 @@ public class MainActivity extends AndARActivity {
         if(!wentUp) {
             switch(event.getAction()) {
                 case MotionEvent.ACTION_UP:
-                    String message = "dasdasdasdas";
-                    Log.d("NOTIFICATIONS", message);
-                    new SendNotificationTask(message).execute();
-                    this.makeScreenshot((int)event.getX(), (int)event.getY());
+                    touchX = event.getX();
+                    touchY = event.getY();
+                    String color = this.makeScreenshot((int)touchX, (int)touchY);
+                    if(TmpColorsSolution.isColorPicked(color)) {
+                        Log.d("KOLOR", "wyslij sync");
+                    } else {
+                        Log.d("KOLOR", "nic nie robimy");
+                    }
+
+                    break;
+                case MotionEvent.ACTION_DOWN:
+
+                    touchX = event.getX();
+                    touchY = event.getY();
+                    Log.d("POINTER", "x: " + touchX + " | y: " + touchY );
+
                     break;
             }
         }

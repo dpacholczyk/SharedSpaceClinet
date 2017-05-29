@@ -1,0 +1,56 @@
+if(takeScreenshot) {
+			Log.d("SCREENSHOT", "Sprawdzam touched");
+			this.touched = false;
+			this.touchedColor = "";
+
+			ByteBuffer pixelBuffer = ByteBuffer.allocateDirect(3);
+			pixelBuffer.order(ByteOrder.nativeOrder());
+
+			gl.glReadPixels(screenWidth - this.x, this.y, 1, 1, GL10.GL_RGB, GL10.GL_UNSIGNED_BYTE, pixelBuffer);
+
+			byte[] bb = new byte[3];
+			pixelBuffer.get(bb);
+
+			int[] ib = new int[3];
+			for(int i=0; i<3; i++) {
+				ib[i] = (int)((int)bb[i] & 0xff);
+			}
+
+//			String key = bb[0] + " " + bb[1] + " " + bb[2];
+			String key = ib[0] + " " + ib[1] + " " + ib[2];
+			Log.d("KOLOR", key);
+			String colorName = "";
+
+			int r = ib[0];
+			int g = ib[1];
+			int b = ib[2];
+
+			try {
+				String color = ColorTools.getColor(r, g, b);
+
+				this.touched = true;
+				if(!color.equals("none")) {
+					this.touchedColor = color;
+				}
+				if(this.touched) {
+					Log.d("KOLOR", "touched");
+//					screenshotMonitor.notifyAll();
+					synchronized (screenshotMonitor) {
+						Log.d("KOLOR", "synchronized");
+						screenshotMonitor.notifyAll();
+					}
+				}
+
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+
+			takeScreenshot = false;
+
+		}

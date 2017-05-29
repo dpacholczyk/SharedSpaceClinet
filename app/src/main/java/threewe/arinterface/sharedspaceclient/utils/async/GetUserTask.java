@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import threewe.arinterface.sharedspaceclient.MainActivity;
+import threewe.arinterface.sharedspaceclient.MenuActivity;
 import threewe.arinterface.sharedspaceclient.config.URLs;
 import threewe.arinterface.sharedspaceclient.models.Session;
 import threewe.arinterface.sharedspaceclient.utils.State;
@@ -24,20 +25,29 @@ import threewe.arinterface.sharedspaceclient.utils.translation.JsonTranslator;
  * Created by Dawid Pacholczyk <dpacholczyk@outlook.com> on 01.01.2017.
  */
 
-public class TokenTask extends AsyncTask<String, Void, String> {
+public class GetUserTask extends AsyncTask<String, Void, String> {
 
-    private Exception exception;
-    private String token;
     private String deviceId;
 
-    public TokenTask(String deviceId, String token) {
+    public GetUserTask(String deviceId) {
         this.deviceId = deviceId;
-        this.token = token;
     }
 
     protected String doInBackground(String... params) {
-        URLUtils.getRequest(URLs.SAVE_TOKEN_URL + this.deviceId + "/" + this.token);
+        try {
+            List<String> connectionParams = new ArrayList<String>();
+            connectionParams.add(this.deviceId);
+            String getResponse = URLUtils.getRequest(URLs.GET_USER_URL, connectionParams);
+
+            State.currentUser = JsonTranslator.getUserFromJson(getResponse);
+        } catch(Exception ex) {
+            int test = 1;
+        }
 
         return "";
+    }
+
+    protected void onPostExecute(String result) {
+
     }
 }

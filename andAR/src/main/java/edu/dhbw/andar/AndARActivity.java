@@ -33,8 +33,10 @@ import edu.dhbw.andar.interfaces.OpenGLRenderer;
 import edu.dhbw.andar.pub.CustomActivity;
 import edu.dhbw.andar.util.GraphicsUtil;
 import edu.dhbw.andar.util.IO;
+import edu.dhbw.andar.util.MatrixTrackingGL;
 import edu.dhbw.andopenglcam.R;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -51,13 +53,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Debug;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.SurfaceHolder.Callback;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+//import edu.dhbw.andar.util.
+
+import javax.microedition.khronos.opengles.GL;
 
 public abstract class AndARActivity extends Activity implements Callback, UncaughtExceptionHandler{
 	private GLSurfaceView glSurfaceView;
@@ -72,6 +80,8 @@ public abstract class AndARActivity extends Activity implements Callback, Uncaug
 	private SurfaceHolder mSurfaceHolder = null;
 	private Preview previewSurface;
 	private boolean startPreviewRightAway;
+
+	public static ActivityType currentMode = null;
 	
 	public AndARActivity() {
 		startPreviewRightAway = true;
@@ -108,13 +118,38 @@ public abstract class AndARActivity extends Activity implements Callback, Uncaug
         glSurfaceView.setRenderer(renderer);
         glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
         glSurfaceView.getHolder().addCallback(this);
+		glSurfaceView.setGLWrapper(new  GLSurfaceView.GLWrapper() {
+			public  GL wrap(GL gl) {
+				return  new MatrixTrackingGL(gl);
+			}});
+
+		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+				FrameLayout.LayoutParams.WRAP_CONTENT,
+				FrameLayout.LayoutParams.WRAP_CONTENT,
+				Gravity.TOP|Gravity.RIGHT);
+
+		Button pointerButton = new Button(this);
+		pointerButton.setText("pointer");
+		pointerButton.setLayoutParams(params);
+		pointerButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if(currentMode == null) {
+					currentMode = ActivityType.Pointer;
+				} else {
+					currentMode = null;
+				}
+			}
+		});
         
         frame.addView(glSurfaceView);
         frame.addView(previewSurface);
-        
+		frame.addView(pointerButton);
+
         setContentView(frame);
-        if(Config.DEBUG)
-        	Debug.startMethodTracing("AndAR");
+        if(Config.DEBUG) {
+			Debug.startMethodTracing("AndAR");
+		}
     }
     
     
@@ -298,8 +333,18 @@ public abstract class AndARActivity extends Activity implements Callback, Uncaug
 		return renderer.takeScreenshot();
 	}
 
-	public void makeScreenshot(int x, int y) {
-		renderer.makeScreenshot(x, y);
+//	public void makeScreenshot(int x, int y) {
+//		renderer.makeScreenshot(x, y);
+//	}
+
+	/**
+	 *
+	 * @param x
+	 * @param y
+	 * @return String|null
+	 */
+	public String makeScreenshot(int x, int y) {
+		 return renderer.makeScreenshot(x, y);
 	}
 	
 	/**

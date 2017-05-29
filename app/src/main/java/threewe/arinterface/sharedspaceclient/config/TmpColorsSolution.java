@@ -2,6 +2,8 @@ package threewe.arinterface.sharedspaceclient.config;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by Dawid Pacholczyk <dpacholczyk@outlook.com> on 28.01.2017.
@@ -9,26 +11,30 @@ import java.util.List;
  */
 
 public class TmpColorsSolution {
-    public static List<int[]> allowedColors;
+    public static Map<String, int[]> allowedColors;
 
     public TmpColorsSolution() {
-        allowedColors = new ArrayList<int[]>();
+        allowedColors = new TreeMap<>();
         int[] color = new int[3];
         color[0] = 255;
         color[1] = 0;
         color[2] = 0;
-        allowedColors.add(color);
+        allowedColors.put("red", color);
 
         color = new int[3];
         color[0] = 0;
         color[1] = 255;
         color[2] = 0;
-        allowedColors.add(color);
+        allowedColors.put("green", color);
 
         color = new int[3];
         color[0] = 0;
         color[1] = 0;
         color[2] = 255;
-        allowedColors.add(color);
+        allowedColors.put("blue", color);
+    }
+
+    public static boolean isColorPicked(String key) {
+        return allowedColors.containsKey(key);
     }
 }

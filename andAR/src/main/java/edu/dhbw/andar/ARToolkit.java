@@ -205,6 +205,10 @@ public class ARToolkit {
 		this.imageHeight = height;
 		initialize();
 	}
+
+	public Vector<ARObject> getObjects() {
+		return arobjects;
+	}
 	
 	private void initialize() {
 		//make sure all sizes are set

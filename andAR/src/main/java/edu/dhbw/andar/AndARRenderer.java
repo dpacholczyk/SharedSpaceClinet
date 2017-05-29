@@ -35,6 +35,7 @@ import javax.microedition.khronos.opengles.GL10;
 import edu.dhbw.andar.interfaces.OpenGLRenderer;
 import edu.dhbw.andar.interfaces.PreviewFrameSink;
 import edu.dhbw.andar.util.ColorTools;
+import edu.dhbw.andar.util.MatrixGrabber;
 
 
 import android.content.res.Resources;
@@ -99,6 +100,13 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
 	private float aspectRatio=1;
 	private OpenGLRenderer customRenderer;
 	private AndARActivity activity;
+
+	private boolean touched = false;
+	private String touchedColor = "";
+
+	private GL10 frameGl;
+
+	MatrixGrabber matrixGrabber = new MatrixGrabber();
 	
 	/**
 	 * mode, being either GL10.GL_RGB or GL10.GL_LUMINANCE
@@ -116,15 +124,26 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
 		this.markerInfo = markerInfo;
 		this.activity = activity;
 	}
-	
+
+	public int getIndexByColor(int r, int g, int b)
+	{
+		return (r)|(g<<8)|(b<<16);
+	}
+
+	public void getColorByIndex(int index) {
+		int r = index&0xFF;
+		int g = (index>>8)&0xFF;
+		int b = (index>>16)&0xFF;
+		int test = 1;
+	}
 
 	/* (non-Javadoc)
 	 * @see android.opengl.GLSurfaceView.Renderer#onDrawFrame(javax.microedition.khronos.opengles.GL10)
 	 */
 	@Override
 	public final void onDrawFrame(GL10 gl) {
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);		
-		
+		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+
 		if(DEBUG) {
 			gl = (GL10) GLDebugHelper.wrap(gl, GLDebugHelper.CONFIG_CHECK_GL_ERROR, log);
 		}
@@ -149,100 +168,41 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
 			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
 			frameEnqueued = false;
 		}
-		
-		gl.glColor4f(1, 1, 1, 1f);	
+
+		gl.glColor4f(1, 1, 1, 1f);
 		//draw camera preview frame:
 		gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-		
-		gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);		
+
+		gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);
 		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, squareBuffer);
-		
+
 		//draw camera square
 		gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
-		
+
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 
 		if(customRenderer != null)
 			customRenderer.setupEnv(gl);
 		else {
-			gl.glEnable(GL10.GL_LIGHTING);
-			gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, ambientLightBuffer);
-			gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, diffuseLightBuffer);
-			gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_SPECULAR, specularLightBuffer);
-			gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, lightPositionBuffer);
-			gl.glEnable(GL10.GL_LIGHT0);
+//			gl.glEnable(GL10.GL_LIGHTING);
+//			gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, ambientLightBuffer);
+//			gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, diffuseLightBuffer);
+//			gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_SPECULAR, specularLightBuffer);
+//			gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, lightPositionBuffer);
+//			gl.glEnable(GL10.GL_LIGHT0);
 		}
-		
+
+		matrixGrabber.getCurrentState(gl);
+
 		markerInfo.draw(gl);
-		
+
 		if(customRenderer != null) {
 			customRenderer.draw(gl);
 		}
 
-		//take a screenshot, if desired
-		if(takeScreenshot) {
-			//http://www.anddev.org/how_to_get_opengl_screenshot__useful_programing_hint-t829.html
-			takeScreenshot = false;
-			int[] tmp = new int[screenHeight*screenWidth];
-			int[] screenshot = new int[screenHeight*screenWidth];
-			Buffer screenshotBuffer = IntBuffer.wrap(tmp);
-			screenshotBuffer.position(0);
-			gl.glReadPixels(0,0,screenWidth,screenHeight, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, screenshotBuffer);
-			for(int i=0; i<screenHeight; i++)
-	         {//remember, that OpenGL bitmap is incompatible with Android bitmap
-	          //and so, some correction need.
-	              for(int j=0; j<screenWidth; j++)
-	              {
-	                   int pix=tmp[i*screenWidth+j];
-	                   int pb=(pix>>16)&0xff;
-	                   int pr=(pix<<16)&0x00ff0000;
-	                   int pix1=(pix&0xff00ff00) | pr | pb;
-	                   screenshot[(screenHeight-i-1)*screenWidth+j]=pix1;
-	              }
-	         }
 
-			this.screenshot = Bitmap.createBitmap(screenshot, screenWidth, screenHeight, Config.RGB_565);
-
-			int pixel = this.screenshot.getPixel(x,y);
-			int redValue = Color.red(pixel);
-			int blueValue = Color.blue(pixel);
-			int greenValue = Color.green(pixel);
-
-			String colorName = "";
-			Log.d("SCREENSHOT", "kolor 1: " + colorName);
-			try {
-				colorName = ColorTools.getColor(redValue, greenValue, blueValue);
-
-				Log.d("SCREENSHOT", "kolor: " + colorName);
-				if(!colorName.equals("none") && colorName.equals(ColorTools.FOR_ACTIVATION)) {
-					Log.d("SCREENSHOT", "nacisnalem obiekt");
-				} else {
-					Log.d("SCREENSHOT", "nie nacisnalem obiekt");
-				}
-
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-				Log.d("SCREENSHOT", "1: " + e.getMessage());
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-				Log.d("SCREENSHOT", "2: " + e.getMessage());
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-				Log.d("SCREENSHOT", "3: " + e.getMessage());
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-				Log.d("SCREENSHOT", "4: " + e.getMessage());
-			}
-
-			screenshotTaken = true;
-			takeScreenshot = false;
-			//wake up the waiting method
-//			synchronized (screenshotMonitor) {
-//				screenshotMonitor.notifyAll();
-//			}
-		}
 	}
 	
 
@@ -253,6 +213,7 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		//TODO handle landscape view
 		gl.glViewport(0, 0, width, height);
+		int[] viewport = { 0, 0, width, height };
 		aspectRatio = (float)width/(float)height;
 		setupDraw2D(gl);		
 		square = new float[] { 	-100f*aspectRatio, -100.0f, -1f,
@@ -407,6 +368,7 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
 				//protect against spurios wakeups
 				try {
 					screenshotMonitor.wait();
+					Log.d("SCREENSHOT", "try");
 				} catch (InterruptedException e) {
 					Log.d("SCREENSHOT", e.getMessage());
 				}
@@ -415,13 +377,46 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
 		return screenshot;
 	}
 
-	public void makeScreenshot(int x, int y) {
+//	public void makeScreenshot(int x, int y) {
+//		this.takeScreenshot = true;
+//		this.screenshotTaken = false;
+//		this.x = x;
+//		this.y = y;
+//	}
+
+	/**
+	 *
+	 * @param x
+	 * @param y
+	 * @return String|null
+	 */
+	public String makeScreenshot(int x, int y) {
 		this.takeScreenshot = true;
-		this.screenshotTaken = false;
 		this.x = x;
 		this.y = y;
+
+		Log.d("KOLOR", "sync0: " + this.touchedColor);
+
+		synchronized (screenshotMonitor) {
+			try {
+				Log.d("KOLOR", "sync1: " + this.touchedColor);
+				screenshotMonitor.wait(200);
+				Log.d("KOLOR", "sync2: " + this.touchedColor);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+
+		Log.d("KOLOR", "sync3: " + this.touchedColor);
+
+
+		if(this.touched) {
+			return this.touchedColor;
+		} else {
+			return null;
+		}
 	}
-	
 	
 	
 }

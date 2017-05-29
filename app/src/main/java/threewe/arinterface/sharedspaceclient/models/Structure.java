@@ -34,4 +34,22 @@ public class Structure {
         this.position = new double[]{positionX, positionY};
         this.definition = def;
     }
+
+    public float[] getColorf() {
+        float[] tmp = new float[color.length];
+        tmp[0] = 1 / (float)color[0];
+        tmp[1] = 1 / (float)color[1];
+        tmp[2] = 1 / (float)color[2];
+
+        return tmp;
+    }
+
+    public float[] getColorfTest() {
+        float[] tmp = new float[color.length];
+        tmp[0] = 1 / (float)0;
+        tmp[1] = 1 / (float)0;
+        tmp[2] = 1 / (float)0;
+
+        return tmp;
+    }
 }

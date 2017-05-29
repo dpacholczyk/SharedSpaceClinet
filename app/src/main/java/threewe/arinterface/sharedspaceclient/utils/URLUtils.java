@@ -84,8 +84,10 @@ public class URLUtils
                 }
             }
         } catch (MalformedURLException e) {
+            Log.e("URLUtils", "74392763: " + e.getMessage());
             return "Error code: 74392763";
         } catch (IOException e) {
+            Log.e("URLUtils", "17474037: " + e.getMessage());
             return "Error code: 17474037";
         }
 

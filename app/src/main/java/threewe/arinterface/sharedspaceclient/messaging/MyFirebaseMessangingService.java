@@ -5,6 +5,8 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import threewe.arinterface.sharedspaceclient.MenuActivity;
+
 /**
  * Created by dpach on 26.02.2017.
  */
@@ -21,7 +23,7 @@ public class MyFirebaseMessangingService extends FirebaseMessagingService {
         }
 
         if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            Log.d(TAG, "( " + MenuActivity.manufacturer + " ) " + "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
 
     }

@@ -50,6 +50,27 @@ public class JsonTranslator {
         return s;
     }
 
+    public static User getUserFromJson(String json) {
+        User user = null;
+
+        try {
+            JSONObject jObject = new JSONObject(json);
+
+            Long id = jObject.getLong("id");
+            String name = jObject.getString("name");
+            String deviceId = jObject.getString("deviceId");
+
+            user.id = id;
+            user.name = name;
+            user.deviceId = deviceId;
+
+        } catch(JSONException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
     public static Session getSessionFromJson(String json) {
         Session s = null;
         try {

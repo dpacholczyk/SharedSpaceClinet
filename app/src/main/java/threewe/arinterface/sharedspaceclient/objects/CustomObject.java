@@ -48,7 +48,7 @@ public class CustomObject extends ARObject {
 
     public CustomObject(String name, String patternName, double markerWidth, Structure structure, Context ctx) {
         super(name, patternName, markerWidth, structure.position);
-        float   mat_flash_shinyf[] = {50.0f};
+        float   mat_flash_shinyf[] = {0.0f};
         this.structure = structure;
 
         this.objectDefinition = structure.definition;
@@ -61,10 +61,10 @@ public class CustomObject extends ARObject {
 //        this.box = new GenericObject(this.objectDefinition);
        // this.box = new GenericObject();
 
-//        mat_ambient = GraphicsUtil.makeFloatBuffer(structure.color);
-//        mat_flash = GraphicsUtil.makeFloatBuffer(structure.color);
+        mat_ambient = GraphicsUtil.makeFloatBuffer(structure.getColorf());
+        mat_flash = GraphicsUtil.makeFloatBuffer(structure.getColorf());
         mat_flash_shiny = GraphicsUtil.makeFloatBuffer(mat_flash_shinyf);
-//        mat_diffuse = GraphicsUtil.makeFloatBuffer(structure.color);
+        mat_diffuse = GraphicsUtil.makeFloatBuffer(structure.getColorf());
     }
 
 //    private GenericObject box = new GenericObject();
