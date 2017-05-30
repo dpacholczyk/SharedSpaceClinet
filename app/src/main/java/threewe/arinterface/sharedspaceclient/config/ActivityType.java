@@ -6,5 +6,6 @@ package threewe.arinterface.sharedspaceclient.config;
 
 public enum ActivityType {
     Pointer,
-    Text
+    Text,
+    Highlight
 }

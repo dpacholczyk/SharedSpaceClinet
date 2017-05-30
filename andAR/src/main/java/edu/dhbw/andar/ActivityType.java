@@ -6,5 +6,6 @@ package edu.dhbw.andar;
 
 public enum ActivityType {
     Pointer,
-    Text
+    Text,
+    Highlight
 }

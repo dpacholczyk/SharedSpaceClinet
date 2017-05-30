@@ -27,6 +27,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.Arrays;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -36,6 +37,7 @@ import edu.dhbw.andar.interfaces.OpenGLRenderer;
 import edu.dhbw.andar.interfaces.PreviewFrameSink;
 import edu.dhbw.andar.util.ColorTools;
 import edu.dhbw.andar.util.MatrixGrabber;
+import edu.dhbw.andar.util.Ray;
 
 
 import android.content.res.Resources;
@@ -202,6 +204,15 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
 			customRenderer.draw(gl);
 		}
 
+		if(takeScreenshot) {
+			Log.d("SCREENSHOT", "Sprawdzam touched");
+
+			Ray r = new Ray(gl, screenWidth, screenHeight, x, y);
+			Log.d("SCREENSHOT", "Near Coord =" + Arrays.toString(r.P0));
+			Log.d("SCREENSHOT", "Far Coord =" + Arrays.toString(r.P1));
+
+			takeScreenshot = false;
+		}
 
 	}
 	
@@ -395,13 +406,9 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
 		this.x = x;
 		this.y = y;
 
-		Log.d("KOLOR", "sync0: " + this.touchedColor);
-
 		synchronized (screenshotMonitor) {
 			try {
-				Log.d("KOLOR", "sync1: " + this.touchedColor);
 				screenshotMonitor.wait(200);
-				Log.d("KOLOR", "sync2: " + this.touchedColor);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

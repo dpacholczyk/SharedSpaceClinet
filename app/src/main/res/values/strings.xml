@@ -5,6 +5,9 @@
     <string name="join_session_short">Join</string>
     <string name="join_session_title">Enter session ID</string>
     <string name="cancel">Cancel</string>
+    <string name="highlight">Highlight</string>
+    <string name="pointer">Pointer</string>
+    <string name="text">Text</string>
 
     <string name="FCM_PREF">threewe.arinterface.sharedspaceclient.fcm_pref</string>
     <string name="FCM_TOKEN">threewe.arinterface.sharedspaceclient.fcm_token</string>

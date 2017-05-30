@@ -1,9 +1,19 @@
 package threewe.arinterface.sharedspaceclient;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -11,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 
 import edu.dhbw.andar.ARToolkit;
+import edu.dhbw.andar.ActivityType;
 import edu.dhbw.andar.AndARActivity;
 import edu.dhbw.andar.exceptions.AndARException;
 import threewe.arinterface.sharedspaceclient.config.TmpColorsSolution;
@@ -53,6 +64,49 @@ public class MainActivity extends AndARActivity {
                 e.printStackTrace();
             }
         }
+
+
+        LinearLayout frame = new LinearLayout(this);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.TOP|Gravity.RIGHT);
+
+        Button pointerButton = new Button(this);
+        pointerButton.setText(getResources().getString(R.string.pointer));
+        pointerButton.setLayoutParams(params);
+        pointerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(currentMode == null) {
+                    currentMode = ActivityType.Pointer;
+                    Log.d("LISTVIEW", "pointer");
+                    prepareObjectList();
+                } else {
+                    currentMode = null;
+                }
+            }
+        });
+
+        Button highlightButton = new Button(this);
+        highlightButton.setText(getResources().getString(R.string.highlight));
+        highlightButton.setLayoutParams(params);
+        highlightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(currentMode == null) {
+                    currentMode = ActivityType.Highlight;
+                    Log.d("LISTVIEW", "highlight");
+                    prepareObjectList();
+                } else {
+                    currentMode = null;
+                }
+            }
+        });
+
+        frame.addView(pointerButton);
+        frame.addView(highlightButton);
+        addContentView(frame, params);
     }
 
     private void saveToFile(String fileName, String pattern) {
@@ -83,11 +137,7 @@ public class MainActivity extends AndARActivity {
                     touchX = event.getX();
                     touchY = event.getY();
                     String color = this.makeScreenshot((int)touchX, (int)touchY);
-                    if(TmpColorsSolution.isColorPicked(color)) {
-                        Log.d("KOLOR", "wyslij sync");
-                    } else {
-                        Log.d("KOLOR", "nic nie robimy");
-                    }
+
 
                     break;
                 case MotionEvent.ACTION_DOWN:
@@ -114,4 +164,30 @@ public class MainActivity extends AndARActivity {
         finish();
     }
 
+    private void prepareObjectList() {
+        Dialog dialog = new Dialog(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Color Mode");
+
+        ListView oList = new ListView(this);
+        String[] data = new String[State.currentSession.markers.size()];
+        int i = 0;
+        for(Marker marker : State.currentSession.markers) {
+            data[i] = marker.getStructure().name;
+            i++;
+        }
+        ArrayAdapter<String> oAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, data);
+        oList.setAdapter(oAdapter);
+        oList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedItem = (String) adapterView.getSelectedItem();
+                Log.d("LISTVIEW", adapterView.getSelectedItem() + " : " + adapterView.getSelectedItemId() + " : " + adapterView.getSelectedItemPosition());
+            }
+        });
+
+        builder.setView(oList);
+        dialog = builder.create();
+        dialog.show();
+    }
 }

@@ -10,8 +10,8 @@ import javax.microedition.khronos.opengles.GL10;
  */
 
 public class Ray {
-    private float[] P0;
-    private float[] P1;
+    public float[] P0;
+    public float[] P1;
 
     public Ray(GL10 gl, int width, int height, float xTouch, float yTouch) {
         MatrixGrabber matrixGrabber = new MatrixGrabber();

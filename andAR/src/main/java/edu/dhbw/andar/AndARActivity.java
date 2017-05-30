@@ -122,29 +122,9 @@ public abstract class AndARActivity extends Activity implements Callback, Uncaug
 			public  GL wrap(GL gl) {
 				return  new MatrixTrackingGL(gl);
 			}});
-
-		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.WRAP_CONTENT,
-				FrameLayout.LayoutParams.WRAP_CONTENT,
-				Gravity.TOP|Gravity.RIGHT);
-
-		Button pointerButton = new Button(this);
-		pointerButton.setText("pointer");
-		pointerButton.setLayoutParams(params);
-		pointerButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				if(currentMode == null) {
-					currentMode = ActivityType.Pointer;
-				} else {
-					currentMode = null;
-				}
-			}
-		});
         
         frame.addView(glSurfaceView);
         frame.addView(previewSurface);
-		frame.addView(pointerButton);
 
         setContentView(frame);
         if(Config.DEBUG) {
