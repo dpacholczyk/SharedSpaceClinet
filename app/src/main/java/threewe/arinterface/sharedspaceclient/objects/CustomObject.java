@@ -65,6 +65,8 @@ public class CustomObject extends ARObject {
         mat_flash = GraphicsUtil.makeFloatBuffer(structure.getColorf());
         mat_flash_shiny = GraphicsUtil.makeFloatBuffer(mat_flash_shinyf);
         mat_diffuse = GraphicsUtil.makeFloatBuffer(structure.getColorf());
+
+        structure.object = this;
     }
 
 //    private GenericObject box = new GenericObject();

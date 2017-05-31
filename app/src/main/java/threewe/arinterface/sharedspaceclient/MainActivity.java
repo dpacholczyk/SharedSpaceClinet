@@ -167,14 +167,16 @@ public class MainActivity extends AndARActivity {
     private void prepareObjectList() {
         Dialog dialog = new Dialog(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select Color Mode");
+        builder.setTitle(getResources().getString(R.string.select_object));
 
         ListView oList = new ListView(this);
         String[] data = new String[State.currentSession.markers.size()];
         int i = 0;
         for(Marker marker : State.currentSession.markers) {
-            data[i] = marker.getStructure().name;
-            i++;
+            if(marker.getStructure().object.isVisible()) {
+                data[i] = marker.getStructure().name;
+                i++;
+            }
         }
         ArrayAdapter<String> oAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, data);
         oList.setAdapter(oAdapter);

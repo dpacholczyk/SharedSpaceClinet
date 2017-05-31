@@ -8,6 +8,7 @@ import java.util.List;
 import threewe.arinterface.sharedspaceclient.config.ActivityType;
 import threewe.arinterface.sharedspaceclient.models.Marker;
 import threewe.arinterface.sharedspaceclient.models.Session;
+import threewe.arinterface.sharedspaceclient.models.Structure;
 import threewe.arinterface.sharedspaceclient.models.User;
 
 /**
@@ -35,5 +36,9 @@ public class State {
         }
 
         return currentId;
+    }
+
+    public static void shareState(ActivityType activityType, Structure structure) {
+
     }
 }

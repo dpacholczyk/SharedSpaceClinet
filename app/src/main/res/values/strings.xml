@@ -8,6 +8,7 @@
     <string name="highlight">Highlight</string>
     <string name="pointer">Pointer</string>
     <string name="text">Text</string>
+    <string name="select_object">Select object</string>
 
     <string name="FCM_PREF">threewe.arinterface.sharedspaceclient.fcm_pref</string>
     <string name="FCM_TOKEN">threewe.arinterface.sharedspaceclient.fcm_token</string>

@@ -1,5 +1,8 @@
 package threewe.arinterface.sharedspaceclient.models;
 
+
+import edu.dhbw.andar.ARObject;
+
 /**
  * Created by dpach on 13.11.2016.
  */
@@ -14,6 +17,8 @@ public class Structure {
     public double[] position;
 
     public String definition;
+
+    public ARObject object;
 
     public Structure() {
 
