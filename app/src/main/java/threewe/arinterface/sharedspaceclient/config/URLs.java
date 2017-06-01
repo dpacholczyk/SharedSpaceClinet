@@ -55,6 +55,10 @@ public class URLs {
     public static String GET_USER_URL = protocol + "://" + adress + ":" + port + "/users/get";
     // users end
 
+    // sync start
+    public static String STATE_SYNC_URL = protocol + "://" + adress + ":" + port + "/state/sync";
+    // sync end
+
     public static void setAdresses() {
         MARKERS_URL = protocol + "://" + adress + ":" + port + "/markers";
         STRUCTURE_URL = protocol + "://" + adress + ":" + port + "/marker/";
@@ -65,5 +69,6 @@ public class URLs {
         SAVE_TOKEN_URL = protocol + "://" + adress + ":" + port + "/notifications/token/save/";
         SEND_NOTIFICACTION_URL = protocol + "://" + adress + ":" + port + "/notifications/receive";
         GET_USER_URL = protocol + "://" + adress + ":" + port + "/users/get";
+        STATE_SYNC_URL = protocol + "://" + adress + ":" + port + "/state/sync";
     }
 }

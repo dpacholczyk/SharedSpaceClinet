@@ -3,9 +3,12 @@ package threewe.arinterface.sharedspaceclient.utils;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import threewe.arinterface.sharedspaceclient.config.ActivityType;
+import threewe.arinterface.sharedspaceclient.config.URLs;
 import threewe.arinterface.sharedspaceclient.models.Marker;
 import threewe.arinterface.sharedspaceclient.models.Session;
 import threewe.arinterface.sharedspaceclient.models.Structure;
@@ -39,6 +42,11 @@ public class State {
     }
 
     public static void shareState(ActivityType activityType, Structure structure) {
+        Map<String, Object> activity = new HashMap<>();
+        activity.put("type", activityType);
+        activity.put("structure", structure.id);
+        activity.put("session", State.currentSession.id);
 
+        URLUtils.postRequest(URLs.STATE_SYNC_URL, activity);
     }
 }

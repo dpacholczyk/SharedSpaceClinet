@@ -94,7 +94,7 @@ public class URLUtils
         return getResponse;
     }
 
-    public static void postRequest(String POST_URL, Map<String, String> params) {
+    public static void postRequest(String POST_URL, Map<String, Object> params) {
         try {
             URL url = new URL(POST_URL);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
