@@ -23,7 +23,7 @@ public class SendNotificationTask extends AsyncTask<String, Void, String> {
     }
 
     protected String doInBackground(String... params) {
-        Map<String, String> urlParams = new HashMap<String, String>();
+        Map<String, Object> urlParams = new HashMap<>();
         urlParams.put("message", this.message);
         URLUtils.postRequest(URLs.SEND_NOTIFICACTION_URL, urlParams);
 

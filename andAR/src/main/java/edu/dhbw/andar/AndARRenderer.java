@@ -40,6 +40,7 @@ import edu.dhbw.andar.util.MatrixGrabber;
 import edu.dhbw.andar.util.Ray;
 
 
+import android.app.Notification;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -109,6 +110,8 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
 	private GL10 frameGl;
 
 	MatrixGrabber matrixGrabber = new MatrixGrabber();
+	public static boolean performAction = false;
+    public static String actionName = null;
 	
 	/**
 	 * mode, being either GL10.GL_RGB or GL10.GL_LUMINANCE
@@ -202,6 +205,20 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
 
 		if(customRenderer != null) {
 			customRenderer.draw(gl);
+		}
+
+		if(performAction) {
+			performAction = false;
+			Log.d("PERFORM_ACTION", "wykonuję akcję: " + actionName);
+            switch (actionName) {
+                case "Highlight":
+
+
+
+                    actionName = null;
+                    performAction = false;
+                    break;
+            }
 		}
 
 		if(takeScreenshot) {

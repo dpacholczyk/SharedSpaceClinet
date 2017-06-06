@@ -54,10 +54,10 @@ public class MenuActivity extends AppCompatActivity {
 
         manufacturer = Build.MANUFACTURER + ": " + Build.MODEL;
 
-//        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-//        deviceId = Build.ID;
-//        Log.d("WIADOMOSCI", "Device id: " + deviceId + " : Refreshed tokenn: " + refreshedToken );
-//        new TokenTask(deviceId, refreshedToken).execute();
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        deviceId = Build.ID;
+        Log.d("WIADOMOSCI", "Device id: " + deviceId + " : Refreshed tokenn: " + refreshedToken );
+        new TokenTask(deviceId, refreshedToken).execute();
 
 
 //        createButton = (Button) findViewById(R.id.create_session_button);
