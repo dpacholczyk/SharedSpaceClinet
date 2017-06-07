@@ -21,12 +21,9 @@ package edu.dhbw.andar;
 
 
 import java.io.Writer;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.Arrays;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -35,17 +32,12 @@ import javax.microedition.khronos.opengles.GL10;
 
 import edu.dhbw.andar.interfaces.OpenGLRenderer;
 import edu.dhbw.andar.interfaces.PreviewFrameSink;
-import edu.dhbw.andar.util.ColorTools;
 import edu.dhbw.andar.util.MatrixGrabber;
 import edu.dhbw.andar.util.Ray;
 
-
-import android.app.Notification;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
-import android.graphics.Bitmap.Config;
 import android.opengl.GLDebugHelper;
 import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
@@ -112,6 +104,7 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
 	MatrixGrabber matrixGrabber = new MatrixGrabber();
 	public static boolean performAction = false;
     public static String actionName = null;
+	public static Long structureId = null;
 	
 	/**
 	 * mode, being either GL10.GL_RGB or GL10.GL_LUMINANCE
@@ -201,6 +194,7 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
 
 		matrixGrabber.getCurrentState(gl);
 
+
 		markerInfo.draw(gl);
 
 		if(customRenderer != null) {
@@ -213,7 +207,9 @@ public class AndARRenderer implements Renderer, PreviewFrameSink{
             switch (actionName) {
                 case "Highlight":
 
-
+					for(ARObject obj : markerInfo.getObjects()) {
+//						if(tmp.get)
+					}
 
                     actionName = null;
                     performAction = false;

@@ -30,7 +30,6 @@ import java.util.List;
 import edu.dhbw.andar.exceptions.AndARException;
 import edu.dhbw.andar.exceptions.AndARRuntimeException;
 import edu.dhbw.andar.interfaces.OpenGLRenderer;
-import edu.dhbw.andar.pub.CustomActivity;
 import edu.dhbw.andar.util.GraphicsUtil;
 import edu.dhbw.andar.util.IO;
 import edu.dhbw.andar.util.MatrixTrackingGL;

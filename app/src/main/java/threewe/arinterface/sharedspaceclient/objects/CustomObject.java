@@ -9,6 +9,7 @@ import javax.microedition.khronos.opengles.GL10;
 import edu.dhbw.andar.ARObject;
 import edu.dhbw.andar.pub.SimpleBox;
 import edu.dhbw.andar.util.GraphicsUtil;
+import threewe.arinterface.sharedspaceclient.models.Marker;
 import threewe.arinterface.sharedspaceclient.models.Structure;
 import threewe.arinterface.sharedspaceclient.reader.OBJParser;
 import threewe.arinterface.sharedspaceclient.reader.TDModel;
@@ -46,8 +47,8 @@ public class CustomObject extends ARObject {
 
     }
 
-    public CustomObject(String name, String patternName, double markerWidth, Structure structure, Context ctx) {
-        super(name, patternName, markerWidth, structure.position);
+    public CustomObject(Marker marker, double markerWidth, Structure structure, Context ctx) {
+        super(marker.name, marker.getLocalFileName(), markerWidth, structure.position);
         float   mat_flash_shinyf[] = {0.0f};
         this.structure = structure;
 
@@ -61,12 +62,18 @@ public class CustomObject extends ARObject {
 //        this.box = new GenericObject(this.objectDefinition);
        // this.box = new GenericObject();
 
-        mat_ambient = GraphicsUtil.makeFloatBuffer(structure.getColorf());
-        mat_flash = GraphicsUtil.makeFloatBuffer(structure.getColorf());
-        mat_flash_shiny = GraphicsUtil.makeFloatBuffer(mat_flash_shinyf);
-        mat_diffuse = GraphicsUtil.makeFloatBuffer(structure.getColorf());
+        // za co to odpowiada ? Bo kolor idzie i bez tego
+//        mat_ambient = GraphicsUtil.makeFloatBuffer(structure.getColorf());
+//        mat_flash = GraphicsUtil.makeFloatBuffer(structure.getColorf());
+//        mat_flash_shiny = GraphicsUtil.makeFloatBuffer(mat_flash_shinyf);
+//        mat_diffuse = GraphicsUtil.makeFloatBuffer(structure.getColorf());
 
+        /**
+         * @TODO
+         * trochę jakby dubel. może da się poprawić
+         */
         structure.object = this;
+        marker.setARObject(this);
     }
 
 //    private GenericObject box = new GenericObject();

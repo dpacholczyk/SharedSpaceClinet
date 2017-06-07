@@ -1,5 +1,7 @@
 package threewe.arinterface.sharedspaceclient.models;
 
+import edu.dhbw.andar.ARObject;
+
 /**
  * Created by dpach on 05.11.2016.
  */
@@ -16,6 +18,8 @@ public class Marker {
     private String localFileName = null;
 
     private Structure structure = null;
+
+    private ARObject arObject = null;
 
     public Marker() {
 
@@ -44,5 +48,13 @@ public class Marker {
 
     public Structure getStructure() {
         return this.structure;
+    }
+
+    public void setARObject(ARObject arObject) {
+        this.arObject = arObject;
+    }
+
+    public ARObject getARObject() {
+        return arObject;
     }
 }

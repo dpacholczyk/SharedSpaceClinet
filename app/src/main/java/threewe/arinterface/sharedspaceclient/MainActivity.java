@@ -57,7 +57,7 @@ public class MainActivity extends AndARActivity {
             this.saveToFile(marker.getLocalFileName(), marker.pattern);
 
             artoolkit = MainActivity.super.getArtoolkit();
-            someObject = new CustomObject(marker.name, marker.getLocalFileName(), 80.0, marker.getStructure(), this);
+            someObject = new CustomObject(marker, 80.0, marker.getStructure(), this);
             try {
                 artoolkit.registerARObject(someObject);
             } catch (AndARException e) {

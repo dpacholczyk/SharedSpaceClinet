@@ -15,5 +15,8 @@ public class Highlight extends Action {
         Log.d(TAG, "highlight run");
         AndARRenderer.performAction = true;
         AndARRenderer.actionName = this.getClass().getSimpleName();
+        AndARRenderer.structureId = this.getStructure().id;
+
+
     }
 }
