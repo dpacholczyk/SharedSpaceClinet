@@ -22,6 +22,8 @@ public class CustomObject extends ARObject {
     private TDModel model;
     private Structure structure;
 
+    public static boolean performAction = false;
+
     public CustomObject(String name, String patternName, double markerWidth, double[] markerCenter) {
         super(name, patternName, markerWidth, markerCenter );
         float   mat_ambientf[]     = {0f, 1.0f, 0f, 1.0f};
@@ -57,7 +59,7 @@ public class CustomObject extends ARObject {
 //        ObjFormatReader formatReader = new ObjFormatReader(this.objectDefinition);
         parser=new OBJParser(ctx, structure);
         model=parser.parseOBJ(this.objectDefinition);
-
+        this.vectors = parser.getVPointer();
 
 //        this.box = new GenericObject(this.objectDefinition);
        // this.box = new GenericObject();

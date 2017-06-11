@@ -20,6 +20,7 @@
 package edu.dhbw.andar;
 
 import java.nio.FloatBuffer;
+import java.util.Vector;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -49,6 +50,8 @@ public abstract class ARObject {
 	private double[] transMat = new double[16];//[3][4] array
 	private int id;
 	private boolean initialized = false;
+
+	public Vector<Float> vectors = new Vector<>();
 	
 	/**
 	 * Create a new AR object.

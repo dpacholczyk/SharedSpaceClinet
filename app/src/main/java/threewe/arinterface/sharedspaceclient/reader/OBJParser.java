@@ -46,7 +46,6 @@ public class OBJParser {
 //			while((line = reader.readLine()) != null) {
 			for(int i = 0; i < lines.length; i++) {
 				line = lines[i];
-				Log.v("obj",line);
 				if(line.startsWith("f")){//a polygonal face
 					processFLine(line);
 				}
@@ -68,7 +67,7 @@ public class OBJParser {
 		TDModel t=new TDModel(v,vn,vt,parts,structure.color);
 		t.buildVertexBuffer();
 		t.buildColorBuffer();
-		Log.v("models",t.toString());
+
 		return t;
 	}
 
@@ -203,6 +202,10 @@ public class OBJParser {
 				vnPointer.addAll(Triangulator.triangulate(tmpVn));
 			}
 		}
+	}
+
+	public Vector<Float> getVPointer() {
+		return this.v;
 	}
 
 }

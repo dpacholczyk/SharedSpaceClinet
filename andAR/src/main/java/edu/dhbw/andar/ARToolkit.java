@@ -244,8 +244,9 @@ public class ARToolkit {
 			if(Config.DEBUG)
 				Log.i("MarkerInfo", "going to draw opengl stuff now");
 			for (ARObject obj : arobjects) {
-				if(obj.isVisible())
+				if(obj.isVisible()) {
 					obj.draw(gl);
+				}
 			}
 		}
 	}
