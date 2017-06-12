@@ -49,4 +49,5 @@ public class State {
 
         URLUtils.postRequest(URLs.STATE_SYNC_URL, activity);
     }
+
 }

@@ -102,9 +102,6 @@ public class AndARRenderer implements Renderer, PreviewFrameSink {
     private GL10 frameGl;
 
     MatrixGrabber matrixGrabber = new MatrixGrabber();
-    public static boolean performAction = false;
-    public static String actionName = null;
-    public static Long structureId = null;
 
     /**
      * mode, being either GL10.GL_RGB or GL10.GL_LUMINANCE
@@ -130,61 +127,25 @@ public class AndARRenderer implements Renderer, PreviewFrameSink {
     public final void onDrawFrame(GL10 gl) {
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 
-//        setupDraw2D(gl);
-//        gl.glDisable(GL10.GL_DEPTH_TEST);
-//        gl.glEnable(GL10.GL_TEXTURE_2D);
-//        gl.glDisable(GL10.GL_LIGHTING);
-//        gl.glBindTexture(GL10.GL_TEXTURE_2D, textureName);
-//
-//        gl.glColor4f(1, 1, 1, 1f);
-//        //draw camera preview frame:
-//        gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-//        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-//
-//        gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);
-//        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, squareBuffer);
-//
-//        //draw camera square
-//        gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
-//
-//        gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-//        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
+        setupDraw2D(gl);
+        gl.glDisable(GL10.GL_DEPTH_TEST);
+        gl.glEnable(GL10.GL_TEXTURE_2D);
+        gl.glDisable(GL10.GL_LIGHTING);
+        gl.glBindTexture(GL10.GL_TEXTURE_2D, textureName);
 
+        gl.glColor4f(1, 1, 1, 1f);
+        //draw camera preview frame:
+        gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 
-//        if (performAction) {
-//            Log.d("ZMIANA_KOLORY", "akcja się wola");
-//            int[] c = new int[]{255, 0, 0};
-//            Vector<Float> v = markerInfo.getObjects().get(0).vectors;
-//            ByteBuffer vBuf = ByteBuffer.allocateDirect(v.size() * 4);
-//            vBuf.order(ByteOrder.nativeOrder());
-//            float[] newColor = new float[c.length + 1];
-//            for (int i = 0; i < c.length; i++) {
-//                newColor[i] = (1.0f / 255) * c[i];
-//                newColor[3] = 1.0f;
-//            }
-//
-//            Log.d("ZMIANA_KOLORY", newColor[0] + " " + newColor[1] + " " + newColor[2] + " " + newColor[3] + " ");
-//
-//            FloatBuffer colorBuffer = vBuf.asFloatBuffer();
-//            colorBuffer.put(newColor);
-//            colorBuffer.position(0);
-//            gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
-//
-//            performAction = false;
-//			Log.d("PERFORM_ACTION", "wykonuję akcję: " + actionName);
-//			switch (actionName) {
-//				case "Highlight":
-//
-//					for(ARObject obj : markerInfo.getObjects()) {
-////						if(tmp.get)
-//
-//					}
-//
-//					actionName = null;
-//					performAction = false;
-//					break;
-//			}
-//        }
+        gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);
+        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, squareBuffer);
+
+        //draw camera square
+        gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+
+        gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 
         if (customRenderer != null) {
             customRenderer.setupEnv(gl);

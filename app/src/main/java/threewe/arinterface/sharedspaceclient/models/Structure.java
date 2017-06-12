@@ -2,6 +2,7 @@ package threewe.arinterface.sharedspaceclient.models;
 
 
 import edu.dhbw.andar.ARObject;
+import threewe.arinterface.sharedspaceclient.utils.State;
 
 /**
  * Created by dpach on 13.11.2016.
@@ -57,4 +58,15 @@ public class Structure {
 
         return tmp;
     }
+
+    public static Structure findStructureByName(String name) {
+        for(Marker marker : State.currentSession.markers) {
+            if(marker.getStructure().name.equals(name)) {
+                return marker.getStructure();
+            }
+        }
+
+        return null;
+    }
+
 }

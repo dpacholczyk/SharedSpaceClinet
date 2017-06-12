@@ -19,18 +19,26 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.sql.Struct;
+import java.util.HashMap;
+import java.util.Map;
 
 import edu.dhbw.andar.ARToolkit;
 import edu.dhbw.andar.ActivityType;
 import edu.dhbw.andar.AndARActivity;
 import edu.dhbw.andar.exceptions.AndARException;
+import threewe.arinterface.sharedspaceclient.actions.Highlight;
 import threewe.arinterface.sharedspaceclient.config.TmpColorsSolution;
+import threewe.arinterface.sharedspaceclient.config.URLs;
 import threewe.arinterface.sharedspaceclient.models.Marker;
 import threewe.arinterface.sharedspaceclient.models.Session;
+import threewe.arinterface.sharedspaceclient.models.Structure;
 import threewe.arinterface.sharedspaceclient.objects.CustomObject;
 import threewe.arinterface.sharedspaceclient.renderer.CustomRenderer;
 import threewe.arinterface.sharedspaceclient.utils.State;
+import threewe.arinterface.sharedspaceclient.utils.URLUtils;
 import threewe.arinterface.sharedspaceclient.utils.async.SendNotificationTask;
+import threewe.arinterface.sharedspaceclient.utils.async.SyncTask;
 
 /**
  * Created by Dawid Pacholczyk <dpacholczyk@outlook.com>
@@ -173,23 +181,34 @@ public class MainActivity extends AndARActivity {
         String[] data = new String[State.currentSession.markers.size()];
         int i = 0;
         for(Marker marker : State.currentSession.markers) {
-            if(marker.getStructure().object.isVisible()) {
+//            if(marker.getStructure().object.isVisible()) {
+                Structure s = marker.getStructure();
                 data[i] = marker.getStructure().name;
                 i++;
-            }
+//            }
         }
         ArrayAdapter<String> oAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, data);
         oList.setAdapter(oAdapter);
         oList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String selectedItem = (String) adapterView.getSelectedItem();
-                Log.d("LISTVIEW", adapterView.getSelectedItem() + " : " + adapterView.getSelectedItemId() + " : " + adapterView.getSelectedItemPosition());
+                // name of the structure
+                String selectedItem = (String) adapterView.getItemAtPosition(i);
+                Structure structure = Structure.findStructureByName(selectedItem);
+
+                HashMap<String, Object> params = new HashMap<>();
+                params.put("activity", Highlight.class.getCanonicalName());
+                params.put("structure", structure.id);
+                params.put("session", 1);
+                params.put("sender", "Dawid");
+
+                new SyncTask(params).execute();
             }
         });
 
         builder.setView(oList);
         dialog = builder.create();
+
         dialog.show();
     }
 }

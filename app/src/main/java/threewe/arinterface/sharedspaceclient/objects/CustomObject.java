@@ -9,6 +9,7 @@ import javax.microedition.khronos.opengles.GL10;
 import edu.dhbw.andar.ARObject;
 import edu.dhbw.andar.pub.SimpleBox;
 import edu.dhbw.andar.util.GraphicsUtil;
+import threewe.arinterface.sharedspaceclient.actions.Action;
 import threewe.arinterface.sharedspaceclient.models.Marker;
 import threewe.arinterface.sharedspaceclient.models.Structure;
 import threewe.arinterface.sharedspaceclient.reader.OBJParser;
@@ -23,6 +24,7 @@ public class CustomObject extends ARObject {
     private Structure structure;
 
     public static boolean performAction = false;
+    public static Action performedAction = null;
 
     public CustomObject(String name, String patternName, double markerWidth, double[] markerCenter) {
         super(name, patternName, markerWidth, markerCenter );

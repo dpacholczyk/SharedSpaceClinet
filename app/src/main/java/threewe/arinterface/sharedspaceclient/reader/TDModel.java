@@ -20,6 +20,9 @@ public class TDModel {
     FloatBuffer vertexBuffer;
     FloatBuffer colorBuffer;
 
+    private boolean colorChanged = false;
+    private int colorChangeCounter = 0;
+
     public TDModel(Vector<Float> v, Vector<Float> vn, Vector<Float> vt,
                    Vector<TDModelPart> parts) {
         super();
@@ -61,8 +64,25 @@ public class TDModel {
         gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
         gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
         if (CustomObject.performAction) {
-            this.buildColorBuffer(204, 51, 255);
 //            CustomObject.performAction = false;
+
+            Log.d("AKCJONOWANIE", CustomObject.performedAction.getClass().getSimpleName());
+            switch(CustomObject.performedAction.getClass().getSimpleName()) {
+                case "Highlight":
+                    if(!colorChanged && colorChangeCounter%5 == 0) {
+                        this.buildColorBuffer(204, 51, 255);
+                        colorChanged = true;
+                    }
+                    if(colorChanged && colorChangeCounter%4 == 0) {
+                        this.buildColorBuffer();
+                        colorChanged = false;
+                    }
+                    colorChangeCounter++;
+
+                    break;
+            }
+            Log.d("AKCJONOWANIE", colorChanged + " | " + colorChangeCounter);
+
         } else {
             this.buildColorBuffer();
         }

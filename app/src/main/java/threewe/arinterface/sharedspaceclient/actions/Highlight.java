@@ -14,11 +14,8 @@ public class Highlight extends Action {
     @Override
     public void run() {
         Log.d(TAG, "highlight run");
-        AndARRenderer.performAction = true;
         CustomObject.performAction = true;
-//        AndARRenderer.actionName = this.getClass().getSimpleName();
-//        AndARRenderer.structureId = this.getStructure().id;
-
+        CustomObject.performedAction = this;
 
     }
 }
