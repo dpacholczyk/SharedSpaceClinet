@@ -102,7 +102,7 @@ public class MyRenderer extends GLSurfaceView implements Renderer {
 		gl.glTranslatef(0.0f, -1.2f, -z);	//Move down 1.2 Unit And Into The Screen 6.0
 		gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f);	//X
 		gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f);	//Y
-		model.draw(gl);						//Draw the square
+		model.draw(gl, null);						//Draw the square
 		gl.glLoadIdentity();
 		
 		xrot += xspeed;

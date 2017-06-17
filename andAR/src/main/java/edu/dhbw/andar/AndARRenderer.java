@@ -133,7 +133,7 @@ public class AndARRenderer implements Renderer, PreviewFrameSink {
         gl.glDisable(GL10.GL_LIGHTING);
         gl.glBindTexture(GL10.GL_TEXTURE_2D, textureName);
 
-        gl.glColor4f(1, 1, 1, 1f);
+        gl.glColor4f(1, 1, 1, 0f);
         //draw camera preview frame:
         gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
@@ -142,6 +142,11 @@ public class AndARRenderer implements Renderer, PreviewFrameSink {
         gl.glVertexPointer(3, GL10.GL_FLOAT, 0, squareBuffer);
 
         //draw camera square
+        gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+
+        gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
+
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
 
         gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);

@@ -10,9 +10,11 @@ import java.util.Map;
 
 import threewe.arinterface.sharedspaceclient.actions.Action;
 import threewe.arinterface.sharedspaceclient.actions.ActionPicker;
+import threewe.arinterface.sharedspaceclient.actions.Reset;
 import threewe.arinterface.sharedspaceclient.config.ActionType;
 
 import threewe.arinterface.sharedspaceclient.MenuActivity;
+import threewe.arinterface.sharedspaceclient.config.ActivityType;
 import threewe.arinterface.sharedspaceclient.models.Marker;
 import threewe.arinterface.sharedspaceclient.utils.State;
 
@@ -33,18 +35,40 @@ public class MyFirebaseMessangingService extends FirebaseMessagingService {
             }
             Map<String, String> test2 = remoteMessage.getData();
             String actionType = remoteMessage.getData().get("action");
+            String actionClass = remoteMessage.getData().get("action_name");
+            String[] tmp = actionClass.split("\\.");
+            String actionName = tmp[tmp.length-1];
             Long structureId = new Long(remoteMessage.getData().get("structure"));
 
-            if(actionType.equals(ActionType.ACTIVITY.toString())) {
+            if(actionName.equals(ActivityType.Reset.toString())) {
                 if(State.currentSession.markers != null && State.currentSession.markers.size() > 0) {
-                    for(Marker marker : State.currentSession.markers) {
-                        if(marker.getStructure().id.equals(structureId)) {
-                            ActionPicker.performAction(remoteMessage.getData().get("action_name"), marker.getStructure());
-                            Log.d("ACTION_SYNC", "synchronizuje akcje");
+                    Reset reset = new Reset();
+                    reset.run();
+                    Log.d("ACTION_SYNC", "wykonuje reset");
+                }
+            } else {
+                ActionPicker picker = new ActionPicker();
+                if(actionType.equals(ActionType.ACTIVITY.toString())) {
+                    if(State.currentSession.markers != null && State.currentSession.markers.size() > 0) {
+                        for(Marker marker : State.currentSession.markers) {
+                            if(marker.getStructure().id.equals(structureId)) {
+                                if(remoteMessage.getData().containsKey("color")) {
+                                    String[] colors = remoteMessage.getData().get("color").split("\\|");
+                                    HashMap<String, Object> colorParams = new HashMap<>();
+                                    colorParams.put("red", colors[0]);
+                                    colorParams.put("green", colors[1]);
+                                    colorParams.put("blue", colors[2]);
+
+                                    picker.rgb = colorParams;
+                                }
+                                picker.performAction(remoteMessage.getData().get("action_name"), marker.getStructure());
+                                Log.d("ACTION_SYNC", "synchronizuje akcje");
+                            }
                         }
                     }
                 }
             }
+
 
             if (remoteMessage.getNotification() != null) {
                 Log.d(TAG, "( " + MenuActivity.manufacturer + " ) " + "Message Notification Body: " + remoteMessage.getNotification().getBody());

@@ -19,6 +19,8 @@ import threewe.arinterface.sharedspaceclient.models.User;
  */
 
 public class State {
+    public static final String ACTION_PACKAGE = "threewe.arinterface.sharedspaceclient.actions.";
+
     // list of available markers in current session
     public static List<Marker> availableMarkers = new ArrayList<Marker>();
 
@@ -30,14 +32,11 @@ public class State {
 
     private static String currentId = "DAWID";
 
-    public static String getCurrentId() {
-        Log.d("POLACZENIE", currentId);
-        if(currentId == null) {
-            Long tsLong = System.currentTimeMillis()/1000;
-            String ts = tsLong.toString();
-            currentId = ts;
-        }
+    public static void setCurrentId(String id) {
+        currentId = id;
+    }
 
+    public static String getCurrentId() {
         return currentId;
     }
 

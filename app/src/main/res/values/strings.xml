@@ -13,4 +13,6 @@
     <string name="FCM_PREF">threewe.arinterface.sharedspaceclient.fcm_pref</string>
     <string name="FCM_TOKEN">threewe.arinterface.sharedspaceclient.fcm_token</string>
     <string name="your_device_id">Your device ID:</string>
+    <string name="reset">Reset</string>
+    <string name="color_picker">Color picker</string>
 </resources>

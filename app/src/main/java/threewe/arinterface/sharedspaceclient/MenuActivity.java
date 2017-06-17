@@ -56,6 +56,7 @@ public class MenuActivity extends AppCompatActivity {
 
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         deviceId = Build.ID;
+        State.setCurrentId(deviceId);
         Log.d("WIADOMOSCI", "Device id: " + deviceId + " : Refreshed tokenn: " + refreshedToken );
         new TokenTask(deviceId, refreshedToken).execute();
 

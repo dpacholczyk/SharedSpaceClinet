@@ -3,6 +3,7 @@ package threewe.arinterface.sharedspaceclient.objects;
 import android.content.Context;
 
 import java.nio.FloatBuffer;
+import java.util.HashMap;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -25,6 +26,8 @@ public class CustomObject extends ARObject {
 
     public static boolean performAction = false;
     public static Action performedAction = null;
+    public static Structure selectedStructure = null;
+    public static HashMap<String, Object> rgb = null;
 
     public CustomObject(String name, String patternName, double markerWidth, double[] markerCenter) {
         super(name, patternName, markerWidth, markerCenter );
@@ -106,7 +109,7 @@ public class CustomObject extends ARObject {
 
         //draw the box
 //        box.draw(gl);
-        model.draw(gl);
+        model.draw(gl, structure);
     }
     @Override
     public void init(GL10 gl) {

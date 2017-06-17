@@ -112,6 +112,7 @@ public class URLUtils
                 } else {
                     urlParameters += "&" + pair.getKey() + "=" + pair.getValue();
                 }
+                m++;
             }
             con.setDoOutput(true);
             DataOutputStream wr = new DataOutputStream(con.getOutputStream());

@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import threewe.arinterface.sharedspaceclient.models.Structure;
 import threewe.arinterface.sharedspaceclient.objects.CustomObject;
 
 public class TDModel {
@@ -57,7 +58,7 @@ public class TDModel {
         return str;
     }
 
-    public void draw(GL10 gl) {
+    public void draw(GL10 gl, Structure structure) {
 //		gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
         gl.glEnableClientState(GL10.GL_NORMAL_ARRAY);
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
@@ -69,7 +70,7 @@ public class TDModel {
             Log.d("AKCJONOWANIE", CustomObject.performedAction.getClass().getSimpleName());
             switch(CustomObject.performedAction.getClass().getSimpleName()) {
                 case "Highlight":
-                    if(!colorChanged && colorChangeCounter%5 == 0) {
+                    if(!colorChanged && colorChangeCounter%5 == 0 && (structure != null && structure.id == CustomObject.selectedStructure.id)) {
                         this.buildColorBuffer(204, 51, 255);
                         colorChanged = true;
                     }
@@ -79,6 +80,11 @@ public class TDModel {
                     }
                     colorChangeCounter++;
 
+                    break;
+                case "ColorPicker":
+                    if(structure != null && structure.id == CustomObject.selectedStructure.id) {
+                        this.buildColorBuffer(Integer.parseInt((String)CustomObject.rgb.get("red")), Integer.parseInt((String)CustomObject.rgb.get("green")), Integer.parseInt((String)CustomObject.rgb.get("blue")));
+                    }
                     break;
             }
             Log.d("AKCJONOWANIE", colorChanged + " | " + colorChangeCounter);

@@ -3,6 +3,7 @@ package threewe.arinterface.sharedspaceclient;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -14,6 +15,8 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -24,20 +27,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.dhbw.andar.ARToolkit;
-import edu.dhbw.andar.ActivityType;
 import edu.dhbw.andar.AndARActivity;
 import edu.dhbw.andar.exceptions.AndARException;
 import threewe.arinterface.sharedspaceclient.actions.Highlight;
-import threewe.arinterface.sharedspaceclient.config.TmpColorsSolution;
-import threewe.arinterface.sharedspaceclient.config.URLs;
+import threewe.arinterface.sharedspaceclient.config.ActivityType;
 import threewe.arinterface.sharedspaceclient.models.Marker;
-import threewe.arinterface.sharedspaceclient.models.Session;
 import threewe.arinterface.sharedspaceclient.models.Structure;
 import threewe.arinterface.sharedspaceclient.objects.CustomObject;
 import threewe.arinterface.sharedspaceclient.renderer.CustomRenderer;
+import threewe.arinterface.sharedspaceclient.utils.ColorPickerDialog;
 import threewe.arinterface.sharedspaceclient.utils.State;
-import threewe.arinterface.sharedspaceclient.utils.URLUtils;
-import threewe.arinterface.sharedspaceclient.utils.async.SendNotificationTask;
 import threewe.arinterface.sharedspaceclient.utils.async.SyncTask;
 
 /**
@@ -55,6 +54,31 @@ public class MainActivity extends AndARActivity {
     private float touchY = 0;
 
     private boolean wentUp = false;
+
+    private Button resetButton;
+    private Dialog dialog;
+
+    private int ColorAh= Color.BLACK;
+    private HashMap<String, Object> rgb = null;
+    private RelativeLayout layout;
+
+    private ColorPickerDialog.OnColorChangedListener listener = new ColorPickerDialog.OnColorChangedListener() {
+        @Override
+        public void colorChanged(int color) {
+            Log.d("KOLOR", ""+color);
+            ColorAh=color;
+            layout.setBackgroundColor(ColorAh);
+            int red = Color.red(ColorAh);
+            int green = Color.green(ColorAh);
+            int blue = Color.blue(ColorAh);
+            MainActivity.this.rgb = new HashMap<>();
+            rgb.put("red", red);
+            rgb.put("green", green);
+            rgb.put("blue", blue);
+
+            prepareObjectList();
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,18 +104,30 @@ public class MainActivity extends AndARActivity {
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 Gravity.TOP|Gravity.RIGHT);
 
-        Button pointerButton = new Button(this);
-        pointerButton.setText(getResources().getString(R.string.pointer));
-        pointerButton.setLayoutParams(params);
-        pointerButton.setOnClickListener(new View.OnClickListener() {
+        resetButton = new Button(this);
+        resetButton.setText(getResources().getText(R.string.reset));
+        resetButton.setLayoutParams(params);
+        resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(currentMode == null) {
-                    currentMode = ActivityType.Pointer;
-                    Log.d("LISTVIEW", "pointer");
-                    prepareObjectList();
+                State.selectedMode = ActivityType.Reset;
+                sendStateChangeRequest(null, null);
+            }
+        });
+
+        Button colorPickerButton = new Button(this);
+        colorPickerButton.setText(getResources().getString(R.string.color_picker));
+        colorPickerButton.setLayoutParams(params);
+        colorPickerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(State.selectedMode == null) {
+                    State.selectedMode = ActivityType.ColorPicker;
+                    layout = new RelativeLayout(MainActivity.this);
+                    ColorPickerDialog cpd=new ColorPickerDialog(MainActivity.this, listener, 0);
+                    cpd.show();
                 } else {
-                    currentMode = null;
+                    State.selectedMode = null;
                 }
             }
         });
@@ -102,18 +138,20 @@ public class MainActivity extends AndARActivity {
         highlightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(currentMode == null) {
-                    currentMode = ActivityType.Highlight;
+                if(State.selectedMode == null) {
+//                    MainActivity.this.resetButton.setVisibility(View.VISIBLE);
+                    State.selectedMode = ActivityType.Highlight;
                     Log.d("LISTVIEW", "highlight");
                     prepareObjectList();
                 } else {
-                    currentMode = null;
+                    State.selectedMode = null;
                 }
             }
         });
 
-        frame.addView(pointerButton);
+        frame.addView(colorPickerButton);
         frame.addView(highlightButton);
+        frame.addView(resetButton);
         addContentView(frame, params);
     }
 
@@ -173,7 +211,7 @@ public class MainActivity extends AndARActivity {
     }
 
     private void prepareObjectList() {
-        Dialog dialog = new Dialog(this);
+        dialog = new Dialog(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.select_object));
 
@@ -196,13 +234,9 @@ public class MainActivity extends AndARActivity {
                 String selectedItem = (String) adapterView.getItemAtPosition(i);
                 Structure structure = Structure.findStructureByName(selectedItem);
 
-                HashMap<String, Object> params = new HashMap<>();
-                params.put("activity", Highlight.class.getCanonicalName());
-                params.put("structure", structure.id);
-                params.put("session", 1);
-                params.put("sender", "Dawid");
-
-                new SyncTask(params).execute();
+                MainActivity.this.sendStateChangeRequest(structure, MainActivity.this.rgb);
+//                MainActivity.this.resetButton.setVisibility(View.VISIBLE);
+                MainActivity.this.dialog.dismiss();
             }
         });
 
@@ -210,5 +244,25 @@ public class MainActivity extends AndARActivity {
         dialog = builder.create();
 
         dialog.show();
+    }
+
+//    private void prepare
+
+    private void sendStateChangeRequest(Structure structure, HashMap<String, Object> rgb) {
+        HashMap<String, Object> params = new HashMap<>();
+
+        params.put("activity", State.ACTION_PACKAGE + State.selectedMode.toString());
+        if(structure == null) {
+            params.put("structure", 0);
+        } else {
+            params.put("structure", structure.id);
+        }
+        if(rgb != null) {
+            params.put("color", rgb.get("red") + "|" + rgb.get("green") + "|" + rgb.get("blue"));
+        }
+        params.put("session", State.currentSession.id);
+        params.put("sender", State.getCurrentId());
+
+        new SyncTask(params).execute();
     }
 }

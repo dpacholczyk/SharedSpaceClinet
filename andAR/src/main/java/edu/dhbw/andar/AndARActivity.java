@@ -79,8 +79,6 @@ public abstract class AndARActivity extends Activity implements Callback, Uncaug
 	private SurfaceHolder mSurfaceHolder = null;
 	private Preview previewSurface;
 	private boolean startPreviewRightAway;
-
-	public static ActivityType currentMode = null;
 	
 	public AndARActivity() {
 		startPreviewRightAway = true;
@@ -210,7 +208,7 @@ public abstract class AndARActivity extends Activity implements Callback, Uncaug
     private void openCamera()  {
     	if (camera == null) {
 	    	camera = Camera.open();
-    		camera = CameraHolder.instance().open();
+//    		camera = CameraHolder.instance().open();
 			if(camera == null) {
 				camera = Camera.open();
 			}
