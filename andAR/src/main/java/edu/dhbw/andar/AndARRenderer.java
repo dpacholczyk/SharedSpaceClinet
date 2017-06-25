@@ -127,13 +127,32 @@ public class AndARRenderer implements Renderer, PreviewFrameSink {
     public final void onDrawFrame(GL10 gl) {
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 
+        if(DEBUG) {
+            gl = (GL10) GLDebugHelper.wrap(gl, GLDebugHelper.CONFIG_CHECK_GL_ERROR, log);
+        }
         setupDraw2D(gl);
         gl.glDisable(GL10.GL_DEPTH_TEST);
         gl.glEnable(GL10.GL_TEXTURE_2D);
         gl.glDisable(GL10.GL_LIGHTING);
         gl.glBindTexture(GL10.GL_TEXTURE_2D, textureName);
+        //load new preview frame as a texture, if needed
+        if (frameEnqueued) {
+            frameLock.lock();
+            if(!isTextureInitialized) {
+                initializeTexture(gl);
+            } else {
+                //just update the image
+                //can we just update a portion(non power of two)?...seems to work
+                gl.glTexSubImage2D(GL10.GL_TEXTURE_2D, 0, 0, 0, previewFrameWidth, previewFrameHeight,
+                        mode, GL10.GL_UNSIGNED_BYTE, frameData);
+            }
+            frameLock.unlock();
+            gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
+            gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+            frameEnqueued = false;
+        }
 
-        gl.glColor4f(1, 1, 1, 0f);
+        gl.glColor4f(1, 1, 1, 1f);
         //draw camera preview frame:
         gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
@@ -147,22 +166,22 @@ public class AndARRenderer implements Renderer, PreviewFrameSink {
         gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 
-        gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
-
-        gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
-
-        if (customRenderer != null) {
+        if(customRenderer != null) {
             customRenderer.setupEnv(gl);
+        } else {
+            gl.glEnable(GL10.GL_LIGHTING);
+            gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, ambientLightBuffer);
+            gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, diffuseLightBuffer);
+            gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_SPECULAR, specularLightBuffer);
+            gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, lightPositionBuffer);
+            gl.glEnable(GL10.GL_LIGHT0);
         }
 
-        matrixGrabber.getCurrentState(gl);
         markerInfo.draw(gl);
 
-        if (customRenderer != null) {
+        if(customRenderer != null) {
             customRenderer.draw(gl);
         }
-
     }
 
 
