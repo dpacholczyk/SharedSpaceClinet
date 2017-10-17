@@ -48,6 +48,7 @@ public class MenuActivity extends AppCompatActivity {
         // special server configuration START
         URLs.setProtocol("http");
         URLs.setPort("9000");
+//        URLs.setAdress("192.168.1.224");
         URLs.setAdress("192.168.1.224");
         URLs.setAdresses();
         // special server configuration STOP
@@ -81,7 +82,7 @@ public class MenuActivity extends AppCompatActivity {
                 builder.setTitle(getResources().getString(R.string.join_session_title));
                 final EditText input = new EditText(MenuActivity.this);
                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
-                input.setText("1");
+                input.setText("3");
                 builder.setView(input);
 
                 builder.setPositiveButton(getResources().getString(R.string.join_session_short), new DialogInterface.OnClickListener() {

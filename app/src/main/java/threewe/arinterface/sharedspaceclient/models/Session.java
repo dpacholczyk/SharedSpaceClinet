@@ -12,5 +12,5 @@ public class Session {
 
     public List<SessionUser> users = new ArrayList<SessionUser>();
 
-    public List<Marker> markers = new ArrayList<Marker>();
+    public List<Structure> structures = new ArrayList<Structure>();
 }

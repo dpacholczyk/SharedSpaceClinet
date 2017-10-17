@@ -320,8 +320,8 @@ public abstract class AndARActivity extends Activity implements Callback, Uncaug
 	 * @param y
 	 * @return String|null
 	 */
-	public String makeScreenshot(int x, int y) {
-		 return renderer.makeScreenshot(x, y);
+	public void makeScreenshot(int x, int y) {
+		 renderer.makeScreenshot(x, y);
 	}
 	
 	/**

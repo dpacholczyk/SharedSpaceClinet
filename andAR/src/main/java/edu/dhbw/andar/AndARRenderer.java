@@ -23,8 +23,6 @@ import java.io.Writer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.util.Arrays;
-import java.util.Vector;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -32,6 +30,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import edu.dhbw.andar.interfaces.OpenGLRenderer;
 import edu.dhbw.andar.interfaces.PreviewFrameSink;
+import edu.dhbw.andar.objects.Vector;
 import edu.dhbw.andar.util.MatrixGrabber;
 import edu.dhbw.andar.util.Ray;
 
@@ -41,6 +40,7 @@ import android.graphics.PixelFormat;
 import android.opengl.GLDebugHelper;
 import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
+
 
 /**
  * Opens the camera and displays the output on a square (as a texture)
@@ -89,8 +89,8 @@ public class AndARRenderer implements Renderer, PreviewFrameSink {
     private int previewFrameHeight = 256;
     private int screenWidth = 0;
     private int screenHeight = 0;
-    private int x = 0;
-    private int y = 0;
+    private int x = -99;
+    private int y = -99;
     private ARToolkit markerInfo;
     private float aspectRatio = 1;
     private OpenGLRenderer customRenderer;
@@ -98,6 +98,7 @@ public class AndARRenderer implements Renderer, PreviewFrameSink {
 
     private boolean touched = false;
     private String touchedColor = "";
+    private Ray ray;
 
     private GL10 frameGl;
 
@@ -135,6 +136,19 @@ public class AndARRenderer implements Renderer, PreviewFrameSink {
         gl.glEnable(GL10.GL_TEXTURE_2D);
         gl.glDisable(GL10.GL_LIGHTING);
         gl.glBindTexture(GL10.GL_TEXTURE_2D, textureName);
+
+        ray = null;
+        if(this.x != -99 && this.y != -99) {
+            ray = new Ray(gl, screenWidth, screenHeight, this.x, this.y);
+            this.x = -99;
+            this.y = -99;
+        }
+
+        if(ray != null) {
+
+
+        }
+
         //load new preview frame as a texture, if needed
         if (frameEnqueued) {
             frameLock.lock();
@@ -153,7 +167,7 @@ public class AndARRenderer implements Renderer, PreviewFrameSink {
         }
 
         gl.glColor4f(1, 1, 1, 1f);
-        //draw camera preview frame:
+//draw camera preview frame:
         gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 
@@ -184,6 +198,9 @@ public class AndARRenderer implements Renderer, PreviewFrameSink {
         }
     }
 
+    private void checkIntersection(Ray ray) {
+        float[] dir = Vector.minus(ray.P1, ray.P0);
+    }
 
     /*
      * @see android.opengl.GLSurfaceView.Renderer#onSurfaceChanged(javax.microedition.khronos.opengles.GL10, int, int)
@@ -364,24 +381,9 @@ public class AndARRenderer implements Renderer, PreviewFrameSink {
      * @param y
      * @return String|null
      */
-    public String makeScreenshot(int x, int y) {
-        this.takeScreenshot = true;
+    public void makeScreenshot(int x, int y) {
         this.x = x;
         this.y = y;
-
-        synchronized (screenshotMonitor) {
-            try {
-                screenshotMonitor.wait(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (this.touched) {
-            return this.touchedColor;
-        } else {
-            return null;
-        }
     }
 
 

@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import threewe.arinterface.sharedspaceclient.models.Marker;
 import threewe.arinterface.sharedspaceclient.models.Session;
 import threewe.arinterface.sharedspaceclient.models.SessionUser;
 import threewe.arinterface.sharedspaceclient.models.Structure;
@@ -19,18 +18,6 @@ import threewe.arinterface.sharedspaceclient.utils.State;
  */
 
 public class JsonTranslator {
-    public static void setMarkersFromJson(String json) {
-        try {
-            JSONArray jArray = new JSONArray(json);
-            for(int i = 0; i < jArray.length(); i++) {
-                JSONObject jObject = jArray.getJSONObject(i);
-                Marker m = new Marker(jObject.getLong("id"), jObject.getString("name"), jObject.getString("fileName"), jObject.getString("pattern"));
-                State.availableMarkers.add(m);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static Structure getStructureFromJson(String json) {
         Structure s = null;
@@ -39,9 +26,7 @@ public class JsonTranslator {
 //            for(int i = 0; i < jArray.length(); i++) {
 //                JSONObject jObject = jArray.getJSONObject(i);
                 JSONObject jObject = new JSONObject(json);
-                s = new Structure(jObject.getLong("id"), jObject.getString("name"),
-                        jObject.getInt("colorR"), jObject.getInt("colorG"), jObject.getInt("colorB"),
-                        jObject.getDouble("positionX"), jObject.getDouble("positionY"), jObject.getString("definition"));
+                s = new Structure(jObject.getLong("id"), jObject.getString("name"), jObject.getString("definition"));
 //            }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -71,6 +56,13 @@ public class JsonTranslator {
         return user;
     }
 
+    /**
+     * @TODO
+     * wyciąć kwestie związane z markerami
+     *
+     * @param json
+     * @return
+     */
     public static Session getSessionFromJson(String json) {
         Session s = null;
         try {
@@ -78,7 +70,7 @@ public class JsonTranslator {
 
             Long sessionId = jObject.getLong("id");
             JSONArray jUsers = jObject.getJSONArray("users");
-            JSONArray jMarkers = jObject.getJSONArray("markers");
+            JSONArray jStructures = jObject.getJSONArray("structures");
 
             List<SessionUser> users = new ArrayList<>();
             s = new Session();
@@ -99,36 +91,15 @@ public class JsonTranslator {
                 users.add(su);
             }
 
-            for(int i = 0; i < jMarkers.length(); i++) {
-                JSONObject jMarker = jMarkers.getJSONObject(i);
-
-                Long id = jMarker.getLong("id");
-                String name = jMarker.getString("name");
-                String fileName = jMarker.getString("fileName");
-                String pattern = jMarker.getString("pattern").replace("\r", "");
-                Marker marker = new Marker(id, name, fileName, pattern);
-
-                JSONObject jStructure = jMarker.getJSONObject("structure");
+            for(int i = 0; i < jStructures.length(); i++) {
+                JSONObject jStructure = jStructures.getJSONObject(i);
 
                 Structure structure = new Structure();
                 structure.id = jStructure.getLong("id");
                 structure.name = jStructure.getString("name");
                 structure.definition = jStructure.getString("definition").replace("\r", "");
 
-                double[] position = new double[2];
-                position[0] = jStructure.getDouble("positionX");
-                position[1] = jStructure.getDouble("positionY");
-                structure.position = position;
-
-                int[] color = new int[3];
-                color[0] = jStructure.getInt("colorR");
-                color[1] = jStructure.getInt("colorG");
-                color[2] = jStructure.getInt("colorB");
-                structure.color = color;
-
-                marker.setStucture(structure);
-
-                s.markers.add(marker);
+                s.structures.add(structure);
             }
 
             s.id = sessionId;

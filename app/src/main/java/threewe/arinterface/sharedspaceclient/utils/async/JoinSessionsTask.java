@@ -35,6 +35,7 @@ public class JoinSessionsTask extends AsyncTask<String, Void, String> {
     public JoinSessionsTask(Activity activity, String sessionId) {
         this.activity = activity;
         this.sessionId = sessionId;
+        int q = 1;
     }
 
     protected String doInBackground(String... params) {
@@ -45,6 +46,8 @@ public class JoinSessionsTask extends AsyncTask<String, Void, String> {
             String getResponse = URLUtils.getRequest(URLs.GET_SESSION_URL, sessionParams);
 
             State.currentSession = JsonTranslator.getSessionFromJson(getResponse);
+
+
 
             List<String> joinParams = new ArrayList<String>();
             joinParams.add(MenuActivity.deviceId);

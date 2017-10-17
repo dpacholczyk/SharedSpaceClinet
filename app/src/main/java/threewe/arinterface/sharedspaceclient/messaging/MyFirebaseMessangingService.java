@@ -8,14 +8,13 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.HashMap;
 import java.util.Map;
 
-import threewe.arinterface.sharedspaceclient.actions.Action;
 import threewe.arinterface.sharedspaceclient.actions.ActionPicker;
 import threewe.arinterface.sharedspaceclient.actions.Reset;
 import threewe.arinterface.sharedspaceclient.config.ActionType;
 
 import threewe.arinterface.sharedspaceclient.MenuActivity;
 import threewe.arinterface.sharedspaceclient.config.ActivityType;
-import threewe.arinterface.sharedspaceclient.models.Marker;
+import threewe.arinterface.sharedspaceclient.models.Structure;
 import threewe.arinterface.sharedspaceclient.utils.State;
 
 /**
@@ -41,7 +40,7 @@ public class MyFirebaseMessangingService extends FirebaseMessagingService {
             Long structureId = new Long(remoteMessage.getData().get("structure"));
 
             if(actionName.equals(ActivityType.Reset.toString())) {
-                if(State.currentSession.markers != null && State.currentSession.markers.size() > 0) {
+                if(State.currentSession.structures != null && State.currentSession.structures.size() > 0) {
                     Reset reset = new Reset();
                     reset.run();
                     Log.d("ACTION_SYNC", "wykonuje reset");
@@ -49,9 +48,9 @@ public class MyFirebaseMessangingService extends FirebaseMessagingService {
             } else {
                 ActionPicker picker = new ActionPicker();
                 if(actionType.equals(ActionType.ACTIVITY.toString())) {
-                    if(State.currentSession.markers != null && State.currentSession.markers.size() > 0) {
-                        for(Marker marker : State.currentSession.markers) {
-                            if(marker.getStructure().id.equals(structureId)) {
+                    if(State.currentSession.structures != null && State.currentSession.structures.size() > 0) {
+                        for(Structure structure : State.currentSession.structures) {
+                            if(structure.id.equals(structureId)) {
                                 if(remoteMessage.getData().containsKey("color")) {
                                     String[] colors = remoteMessage.getData().get("color").split("\\|");
                                     HashMap<String, Object> colorParams = new HashMap<>();
@@ -61,7 +60,7 @@ public class MyFirebaseMessangingService extends FirebaseMessagingService {
 
                                     picker.rgb = colorParams;
                                 }
-                                picker.performAction(remoteMessage.getData().get("action_name"), marker.getStructure());
+                                picker.performAction(remoteMessage.getData().get("action_name"), structure);
                                 Log.d("ACTION_SYNC", "synchronizuje akcje");
                             }
                         }

@@ -2,14 +2,11 @@ package threewe.arinterface.sharedspaceclient.utils;
 
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import threewe.arinterface.sharedspaceclient.config.ActivityType;
 import threewe.arinterface.sharedspaceclient.config.URLs;
-import threewe.arinterface.sharedspaceclient.models.Marker;
 import threewe.arinterface.sharedspaceclient.models.Session;
 import threewe.arinterface.sharedspaceclient.models.Structure;
 import threewe.arinterface.sharedspaceclient.models.User;
@@ -20,9 +17,6 @@ import threewe.arinterface.sharedspaceclient.models.User;
 
 public class State {
     public static final String ACTION_PACKAGE = "threewe.arinterface.sharedspaceclient.actions.";
-
-    // list of available markers in current session
-    public static List<Marker> availableMarkers = new ArrayList<Marker>();
 
     public static Session currentSession = null;
 

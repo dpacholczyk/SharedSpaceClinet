@@ -3,10 +3,14 @@
     package="threewe.arinterface.sharedspaceclient">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    
+
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -26,7 +30,10 @@
         </service>
 
 
-    <activity android:name=".MainActivity">
+    <activity android:name=".MainActivity"
+        android:screenOrientation="locked"
+        android:configChanges="orientation|screenSize"
+        android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
         
         <activity android:name=".MenuActivity">
